@@ -1,0 +1,11 @@
+node_modules
+.vscode
+.vs
+.DS_Store
+.idea
+npm-debug.log
+npm-debug.log.*
+dist
+build
+build/*
+package-lock.json
