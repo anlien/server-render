@@ -1,8 +1,8 @@
 const chokidar = require('chokidar');
-
+const path = require('path');
 // One-liner for current directory
 // Initialize watcher.
-const watcher = chokidar.watch('../src', {
+const watcher = chokidar.watch(path.resolve(__dirname,'src'), {
     ignored: /(^|[\/\\])\../, // ignore dotfiles
     persistent: true
 });
