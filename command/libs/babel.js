@@ -30,7 +30,7 @@ function compiling(filesList = []) {
             }
             if (result) {//有值再写
                 let code = result.code;
-                writeFile(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buidDir), code);
+                writeFile(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir), code);
             }
         });
     });
