@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import './index.scss';
 //
 class App extends React.Component {
     render(){

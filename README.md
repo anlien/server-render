@@ -42,3 +42,6 @@ node端使用babel编译。client使用webpack编译。
 
 # 遇到的问题
 * [Async functions producing an error "ReferenceError: regeneratorRuntime is not defined](https://github.com/babel/babel/issues/5085)
+
+* [babel 插件写法](https://github.com/thejameskyle/babel-handbook)
+* [visitor 参数](https://github.com/babel/babel/blob/master/packages/babel-types/src/definitions/es2015.js)
