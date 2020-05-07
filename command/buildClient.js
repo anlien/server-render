@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { clientConfig } = require('./config');
 const TerserPlugin = require('terser-webpack-plugin'); //精简代码
+
 //Solves extract-text-webpack-plugin CSS duplication problem
 //https://github.com/NMFR/optimize-css-assets-webpack-plugin
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -87,7 +88,8 @@ const scssLoader = {
 //babel/transform-runtime
 const jsLoader = {
     test: /\.js$/,
-    exclude: /node_modules/,
+    exclude: /\/node_modules/,
+    // include: clientConfig.srcDir,
     loader: require.resolve('babel-loader'),
     options: {
         "presets": [
@@ -103,15 +105,42 @@ const getWebConfig = {
     mode: 'development',
     target: 'web',
     cache: true,
-    entry: {
-        index: clientConfig.entryJs
-    },
     devtool: 'none',
+    //以页面打包，此处只能以依赖打包
+    entry: clientConfig.entryJs,//在config中 设置入口
     output: {
+        pathinfo: true,
         path: clientConfig.buildDir,
-        filename: 'js/[name].[hash].js',
-        chunkFilename: 'js/[name].[hash].chunk.js',
-        publicPath: '/'
+        filename: 'js/[name].[chunkhash:8].js',
+        chunkFilename: 'js/[name].[chunkhash:8].js',//非入口依赖文件, 使用 chunkhash 而非 hash
+        publicPath: '/'//暂时没有域名的问题
+    },
+    optimization: {
+        // minimize: true// Tell webpack to minimize the bundle using the UglifyjsWebpackPlugin.This is true by default in production mode.
+        splitChunks: {
+            chunks: 'async',
+            minSize: 30000,
+            maxSize: 0,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            automaticNameMaxLength: 30,
+            name: true,
+            cacheGroups: {
+                vendor: {//使用的模块，固定下来
+                    test: /[\\/]node_modules[\\/](react|react-dom|prop-types|object-assign)[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                    priority: -10
+                }
+            },
+            chunks: 'all'
+        },
+        runtimeChunk: false,//runtime~ 文件
+        namedChunks: true,
+        mergeDuplicateChunks: true,
+        occurrenceOrder: true, // To keep filename consistent between different modes (for example building only)  
     },
     module: {
         rules: [

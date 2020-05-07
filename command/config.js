@@ -4,7 +4,7 @@ const path = require('path');
 function getRelativePath(dirPath) {
     let parsePath = path.parse(__dirname);
     const relativePath = path.relative(__dirname, parsePath.dir) || '.';
-    return path.resolve(__dirname, `${relativePath}/${ dirPath }`);
+    return path.resolve(__dirname, `${relativePath}/${dirPath}`);
 }
 
 const serverConfigDir = {
@@ -15,7 +15,14 @@ const serverConfigDir = {
 const clientConfig = {
     srcDir: getRelativePath('src/client'),
     buildDir: getRelativePath('dist/www'),
-    entryJs: getRelativePath('src/client/index.js')
+    // entryJs: {
+    //     home: { import: './src/client/pages/home/index.js', filename: 'pages/[name][ext]' }
+    //     // detail: { import: 'src/client/pages/detail/index.js', filename: 'pages/[name][ext]' }
+    // }
+    entryJs: {
+        home: getRelativePath('src/client/pages/home/index.js'),
+        detail: getRelativePath('src/client/pages/detail/index.js')
+    }
 }
 
 
