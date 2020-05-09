@@ -3,6 +3,7 @@ const babel = require("@babel/core");
 const { writeFile } = require('./files');
 const { serverConfigDir } = require('../config');
 const babelPluginIgnoreMedia = require('./babel-plugin-ignore-media').default;
+const babelPluginReplaceImg = require('./babel-plugin-replace-img').default;
 
 const babelNodeConfig = {
     "presets": [
@@ -16,7 +17,7 @@ const babelNodeConfig = {
             }
         ]
     ],
-    "plugins": [babelPluginIgnoreMedia]
+    "plugins": [babelPluginIgnoreMedia, babelPluginReplaceImg]
 };
 
 
@@ -30,6 +31,7 @@ function compiling(filesList = []) {
             }
             if (result) {//有值再写
                 let code = result.code;
+                // console.log('result.code',result.code); ///若无法替换，则在此使用
                 writeFile(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir), code);
             }
         });

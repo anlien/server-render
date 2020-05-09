@@ -15,16 +15,20 @@ const config = {
 
 
 function runBuildServer() {
-    console.log('runBuildServer','begin')
+    console.log('runBuildServer', 'begin')
     let filesList = [];
     readFileList(config.readDir, filesList);
+    
     const filterFileArr = filterFiles(filesList, 'js');
     // 编译文件
     compiling(filterFileArr);
-    console.log('runBuildServer','end')
+    console.log('runBuildServer', 'end')
 }
 
-runBuildServer();
+// runBuildServer(); //引入就调用
 
+module.exports = {
+    runBuildServer
+}
 
 

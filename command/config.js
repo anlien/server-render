@@ -16,13 +16,13 @@ const clientConfig = {
     srcDir: getRelativePath('src/client'),
     buildDir: getRelativePath('dist/www'),
     // entryJs: {
-    //     home: { import: './src/client/pages/home/index.js', filename: 'pages/[name][ext]' }
-    //     // detail: { import: 'src/client/pages/detail/index.js', filename: 'pages/[name][ext]' }
+    //     home: getRelativePath('src/client/pages/home/index.js'),
+    //     detail: getRelativePath('src/client/pages/detail/index.js')
     // }
     entryJs: {
-        home: getRelativePath('src/client/pages/home/index.js'),
-        detail: getRelativePath('src/client/pages/detail/index.js')
-    }
+        index: getRelativePath('src/client/index.js')
+    },
+    assetManifest: getRelativePath('dist/www/asset-manifest.json')
 }
 
 

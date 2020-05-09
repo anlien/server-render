@@ -124,15 +124,15 @@ const getWebConfig = {
             minChunks: 1,
             maxAsyncRequests: 5,
             maxInitialRequests: 3,
-            automaticNameDelimiter: '~',
+            automaticNameDelimiter: '.',
             automaticNameMaxLength: 30,
             name: true,
             cacheGroups: {
                 vendor: {//使用的模块，固定下来
-                    test: /[\\/]node_modules[\\/](react|react-dom|prop-types|object-assign)[\\/]/,
+                    test: /[\\/]node_modules[\\/]/,
                     name: 'vendor',
-                    chunks: 'all',
-                    priority: -10
+                    chunks: 'all'
+                    // priority: -10
                 }
             },
             chunks: 'all'
@@ -165,16 +165,24 @@ const getWebConfig = {
             chunkFilename: 'css/[name].[contenthash:8].chunk.css',
         }),
         new ManifestPlugin({
-            fileName: 'asset-manifest.json'
+            fileName: '../asset-manifest.json'
         })
     ]
 }
 
 let compilerClient = webpack(getWebConfig);
-compilerClient.run((err, stats) => {
-    const { errors } = stats.compilation;
-    if (errors && errors.length) {
-        console.log('err', errors[0]);
-    }
+
+// 编译的钩子，client端编译结束后，编译server
+// server端依赖于 asset-manifest.json 
+let compilerHook = new Promise((resolve, reject) => {
+    compilerClient.run((err, stats) => {
+        const { errors } = stats.compilation;
+        if (errors && errors.length) {
+            console.log('err', errors[0]);
+            reject()
+        }
+        resolve()
+    });
 });
-// compilerClient.
+
+exports.default = compilerHook;

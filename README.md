@@ -45,3 +45,7 @@ node端使用babel编译。client使用webpack编译。
 
 * [babel 插件写法](https://github.com/thejameskyle/babel-handbook)
 * [visitor 参数](https://github.com/babel/babel/blob/master/packages/babel-types/src/definitions/es2015.js)
+
+# 图片问题
+* 暂时只支持 require('*.png')
+* 资源最好不要重名，输出asset-manifest无法区分

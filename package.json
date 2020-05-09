@@ -4,10 +4,7 @@
   "description": "react 在服务端渲染",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node command/buildServer",
-    "build:client": "node command/buildClient",
-    "start": "node config/start.js && node dist/server/index.js"
+    "start": "node command/start.js "
   },
   "repository": {
     "type": "git",
@@ -20,9 +17,13 @@
   },
   "homepage": "https://github.com/anlien/server-render#readme",
   "dependencies": {
+    "ejs": "^3.1.2",
     "koa": "2.11.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-router": "5.1.2",
+    "react-router-config": "5.1.1",
+    "react-router-dom": "5.1.2"
   },
   "devDependencies": {
     "@babel/cli": "7.8.4",
