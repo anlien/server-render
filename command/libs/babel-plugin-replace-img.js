@@ -9,20 +9,25 @@ exports.default = function ({ types: t }) {
         visitor: {
             CallExpression: {
                 exit: function exit(path, state) {
-                    // A Path is an object representation of the link between two nodes.
-                    let node = path.node;
-                    const [requireVal = {}] = node.arguments;
-                    if (/\.(png|gif|jpg)$/.test(requireVal.value)) {
-                        //asset-manifest 中的资源不支持同名
-                        const clientConfig = require('../../dist/asset-manifest.json');
-                        const { base: pathVal } = _path.parse(requireVal.value);
-                        const replacePath = clientConfig[`media/${pathVal}`];
-                        if (replacePath) {
-                            path.replaceWithSourceString(`'${replacePath}'`);
-                        } else {
-                            console.log('图片 base64');
+                    try {
+                        // A Path is an object representation of the link between two nodes.
+                        let node = path.node;
+                        const [requireVal = {}] = node.arguments;
+                        if (/\.(png|gif|jpg)$/.test(requireVal.value)) {
+                            //asset-manifest 中的资源不支持同名
+                            const clientConfig = require('../../dist/asset-manifest.json');
+                            const { base: pathVal } = _path.parse(requireVal.value);
+                            const replacePath = clientConfig[`media/${pathVal}`];
+                            if (replacePath) {
+                                path.replaceWithSourceString(`'${replacePath}'`);
+                            } else {
+                                console.log('图片 base64');
+                            }
                         }
+                    }catch(e){
+                        console.log("---------------babel-plugin-replace-img-----未找到文件---------");
                     }
+               
                 }
             }
         },

@@ -1,9 +1,10 @@
 
 const babel = require("@babel/core");
-const { writeFile } = require('./files');
+const { writeFile, filterFiles } = require('./files');
 const { serverConfigDir } = require('../config');
 const babelPluginIgnoreMedia = require('./babel-plugin-ignore-media').default;
 const babelPluginReplaceImg = require('./babel-plugin-replace-img').default;
+const fs = require("fs");
 
 const babelNodeConfig = {
     "presets": [
@@ -24,7 +25,9 @@ const babelNodeConfig = {
 
 // 编译js代码
 function compiling(filesList = []) {
-    filesList.forEach(filePath => {
+
+    const filterJsFileArr = filterFiles(filesList, 'js');
+    filterJsFileArr.forEach(filePath => {
         babel.transformFile(filePath, babelNodeConfig, function (err, result) {
             if (err) {
                 console.log(err);
@@ -36,6 +39,13 @@ function compiling(filesList = []) {
             }
         });
     });
+    const filterEjsFileArr = filterFiles(filesList, 'ejs');
+    
+    filterEjsFileArr.forEach(filePath => {
+        const targetPath = filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir);
+        writeFile(targetPath);
+        fs.copyFileSync(filePath, targetPath);
+    })
 }
 
 module.exports = {

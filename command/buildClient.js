@@ -170,19 +170,22 @@ const getWebConfig = {
     ]
 }
 
-let compilerClient = webpack(getWebConfig);
 
-// 编译的钩子，client端编译结束后，编译server
-// server端依赖于 asset-manifest.json 
-let compilerHook = new Promise((resolve, reject) => {
-    compilerClient.run((err, stats) => {
-        const { errors } = stats.compilation;
-        if (errors && errors.length) {
-            console.log('err', errors[0]);
-            reject()
-        }
-        resolve()
+
+let runBuildClient = () => {
+    let compilerClient = webpack(getWebConfig);
+
+    // 编译的钩子，client端编译结束后，编译server
+    // server端依赖于 asset-manifest.json 
+    return new Promise((resolve, reject) => {
+        compilerClient.run((err, stats) => {
+            const { errors } = stats.compilation;
+            if (errors && errors.length) {
+                console.log('err', errors[0]);
+                reject()
+            }
+            resolve()
+        });
     });
-});
-
-exports.default = compilerHook;
+}
+exports.default = runBuildClient;

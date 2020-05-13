@@ -3,7 +3,6 @@ const { readFileList, filterFiles } = require('./libs/files');
 const { compiling } = require('./libs/babel');
 const { serverConfigDir } = require('./config');
 
-
 // console.log('__dirname',__dirname);
 
 let parsePath = path.parse(__dirname);
@@ -18,13 +17,11 @@ function runBuildServer() {
     console.log('runBuildServer', 'begin')
     let filesList = [];
     readFileList(config.readDir, filesList);
-    
-    const filterFileArr = filterFiles(filesList, 'js');
-    // 编译文件
-    compiling(filterFileArr);
-    console.log('runBuildServer', 'end')
-}
 
+    // 编译文件
+    compiling(filesList);
+    
+    console.log('runBuildServer', 'end')}
 // runBuildServer(); //引入就调用
 
 module.exports = {

@@ -23,7 +23,8 @@ function readFileList(dir, filesList) {
 function filterFiles(filesList = [], extname) {
     let extnameList = {
         js: ['.es6', '.js'],
-        img: ['.png', '.gif', '.jpeg', '.jpg']
+        img: ['.png', '.gif', '.jpeg', '.jpg'],
+        ejs: [".ejs"]
     };
     return filesList.filter(item => {
         const itemExtname = path.extname(item);
@@ -55,12 +56,13 @@ function writeFile(_path, data) {
     if (!fs.existsSync(dirPath)) {
         mkdirsSync(dirPath);
     }
-
-    fs.writeFile(relativePath, data, function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    if (data) {
+        fs.writeFile(relativePath, data, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
 }
 
 module.exports = {

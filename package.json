@@ -4,7 +4,8 @@
   "description": "react 在服务端渲染",
   "main": "index.js",
   "scripts": {
-    "start": "node command/start.js "
+    "build": "node command/start.js",
+    "start": "node dist/server/server/index.js"
   },
   "repository": {
     "type": "git",
