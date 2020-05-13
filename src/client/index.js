@@ -8,10 +8,14 @@ class App extends React.Component {
     render() {
         return <Switch>{
             routes.map((route, index) => {
-                return <Route path={route.path} render={(props) => (<route.component {...props} routes={route.routes} />)}></Route>
+                return <Route path={route.path} render={(props) =>{
+                    const PageComponent = route.getComponent();
+                    console.log(PageComponent);
+                    return <PageComponent></PageComponent>
+                }}></Route>
             })
         }</Switch>
     }
 }
 
-ReactDOM.render(<BrowserRouter></BrowserRouter>, document.body)
+ReactDOM.render(<BrowserRouter><App></App></BrowserRouter>, document.getElementById("root"))

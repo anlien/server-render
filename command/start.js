@@ -1,6 +1,6 @@
 const buildClient = require('./buildClient').default;
 const { runBuildServer } = require('./buildServer')
-// buildClient().then(()=>{
+buildClient().then(()=>{
     runBuildServer();
     console.log('编译 server');
-// })
+})

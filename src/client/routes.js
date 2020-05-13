@@ -3,12 +3,12 @@ const routes = [
     {
         path: "/detail",
         name: "detail",//webpackChunkName中的名称
-        component: import(/* webpackChunkName: 'detail' */'./pages/detail')
+        getComponent: () => import(/* webpackChunkName: 'detail' */'./pages/detail')
     },
     {
         path: "/",
         name: "home",//webpackChunkName中的名称
-        component: import(/* webpackChunkName: 'home' */'./pages/home')// 此处可以优化
+        getComponent: ()=> import(/* webpackChunkName: 'home' */'./pages/home')// 此处可以优化
     }
 ];
 

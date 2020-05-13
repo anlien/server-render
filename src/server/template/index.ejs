@@ -27,5 +27,10 @@
             <script src="<%= item %>"></script>
         <% }) %>
     <% }%>
+    <% if(moduleJsArr.length){ %>
+        <% moduleJsArr.forEach(function(item){ %>
+            <script src="<%= item %>"></script>
+        <% }) %>
+    <% }%>
 </body>
 </html>
