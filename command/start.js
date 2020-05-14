@@ -2,13 +2,10 @@ const fs = require('fs');
 const zlib = require('zlib');
 const filesize = require('filesize');
 const path = require('path');
-// Make sure any symlinks in the project folder are resolved:
-// https://github.com/facebookincubator/create-react-app/issues/637
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 const buildClient = require('./buildClient').default;
 const { runBuildServer } = require('./buildServer');
+const { clientConfig } = require('./config');
 
 function gzipSize(str) {
     return zlib.gzipSync(str, { level: 9 }).length;
@@ -54,7 +51,7 @@ console.time('runBuildClient');
 buildClient().then((stats) => {
     console.timeEnd('runBuildClient');
     console.log('File sizes:\n');
-    printFileSizesAfterBuild(stats, resolveApp('dist/www'), false);
+    printFileSizesAfterBuild(stats, clientConfig.buildDir, false);
     // console.log('File sizes after gzip:\n');
     // printFileSizesAfterBuild(stats, resolveApp('dist/www'), true);
     console.log('编译server端代码');
