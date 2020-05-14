@@ -4,6 +4,8 @@ const app = new Koa();
 import clientRouter from './middleware/clientRouter';
 const koaStatic = require('koa-static');
 
+
+app.use(clientRouter);
 app.use(koaStatic(path.join(__dirname,"../../www")));
 app.use(async (ctx,next)=>{
     if(ctx.req.method === 'HEAD' ){
@@ -14,12 +16,9 @@ app.use(async (ctx,next)=>{
         ctx.res.end('404 - Not Found');
     }
     next();
-})
-
-app.use(clientRouter);
-
+});
 app.use(async ctx => {
     ctx.body = 'App';//编译在组件中完成
 });
 
-app.listen(8000);
+app.listen(9000);

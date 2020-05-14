@@ -28,7 +28,7 @@ const imgLoader = {
     test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
     loader: require.resolve('url-loader'),
     options: {
-        limit: 10000,
+        limit: false,
         name: 'media/[name].[hash:8].[ext]',
     },
 }
@@ -148,7 +148,7 @@ const getWebConfig = {
             { parser: { requireEnsure: false } },
             {
                 oneOf: [
-                    // imgLoader,//不能使用base64 babel暂时没做不兼容
+                    imgLoader,//不能使用base64 babel暂时没做不兼容
                     jsLoader,
                     scssLoader,
                     fileLoader
