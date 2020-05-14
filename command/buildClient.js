@@ -107,7 +107,6 @@ const getWebConfig = {
     target: 'web',
     cache: true,
     devtool: 'none',
-    //以页面打包，此处只能以依赖打包
     entry: clientConfig.entryJs,//在config中 设置入口
     output: {
         pathinfo: true,
@@ -175,10 +174,8 @@ const getWebConfig = {
 
 let runBuildClient = () => {
     let compilerClient = webpack(getWebConfig);
-
     // 编译的钩子，client端编译结束后，编译server
     // server端依赖于 asset-manifest.json 
-
     return new Promise((resolve, reject) => {
         compilerClient.run((err, stats) => {
 
@@ -200,7 +197,7 @@ let runBuildClient = () => {
             } else {
                 console.log('Compiled successfully.\n');
             }
-            resolve(stats)
+            resolve({stats,compilerClient})
         });
     });
 }

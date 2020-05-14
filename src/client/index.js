@@ -34,8 +34,7 @@ class RouteComponent extends React.Component {
     componentDidMount() {
         const { getComponent } = this.props;
         if (this.state.isloading) {
-            getComponent().then(data => {
-                console.log('--------------------data------------------', data);
+            getComponent().then(data => { 
                 this.MachComponent = data.default
                 this.setState({
                     isloading: false

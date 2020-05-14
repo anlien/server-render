@@ -47,8 +47,28 @@ function printFileSizesAfterBuild(webpackStats, buildFolder, isGzipSize) {
     });
 }
 
+function startNode(){
+    console.log(process.cwd());
+    const { spawn } = require('child_process');
+    const ls = spawn('node',['./dist/server/server/index.js']);
+
+    ls.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+    });
+
+    ls.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    ls.on('close', (code) => {
+        console.log(`子进程退出，使用退出码 ${code}`);
+    });
+}
+
+
 console.time('runBuildClient');
-buildClient().then((stats) => {
+
+buildClient().then(({stats,compilerClient}) => {
     console.timeEnd('runBuildClient');
     console.log('File sizes:\n');
     printFileSizesAfterBuild(stats, clientConfig.buildDir, false);
@@ -56,4 +76,22 @@ buildClient().then((stats) => {
     // printFileSizesAfterBuild(stats, resolveApp('dist/www'), true);
     console.log('编译server端代码');
     runBuildServer();
-})
+
+    startNode();
+
+    webpackWatch(compilerClient);
+    setTimeout(()=>{ console.log('12151') },8000)
+});
+
+
+function webpackWatch(compilerClient){
+       //监听事件
+    compilerClient.watch({
+        ignored: /node_modules/,
+        aggregateTimeou: 300,
+        pull: 1000  // 单位：ms
+    },(err,stats)=>{
+        console.log(Object.keys(stats));
+    });
+}
+
