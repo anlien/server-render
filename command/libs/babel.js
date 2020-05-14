@@ -18,7 +18,7 @@ const babelNodeConfig = {
             }
         ]
     ],
-    "plugins": [babelPluginIgnoreMedia, babelPluginReplaceImg]
+    "plugins": ["@babel/plugin-proposal-class-properties", babelPluginIgnoreMedia, babelPluginReplaceImg]
 };
 
 
@@ -40,7 +40,7 @@ function compiling(filesList = []) {
         });
     });
     const filterEjsFileArr = filterFiles(filesList, 'ejs');
-    
+
     filterEjsFileArr.forEach(filePath => {
         const targetPath = filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir);
         writeFile(targetPath);

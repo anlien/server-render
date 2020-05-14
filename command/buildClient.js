@@ -97,7 +97,8 @@ const jsLoader = {
             [
                 "@babel/preset-env"
             ]
-        ]
+        ],
+        "plugins": ["@babel/plugin-proposal-class-properties"]
     }
 }
 
