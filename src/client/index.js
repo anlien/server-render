@@ -70,9 +70,8 @@ class App extends React.Component {
 
 //将异步组件变为同步组件
 const [machRouter = null] = routes.filter(item => {
-    const matchResult = matchPath(location.pathname, item.path);
-    if (matchResult.isExact) return item;
-    return false;
+    const { isExact = false } = matchPath(location.pathname, item.path) || {};
+    return isExact ? item : false;
 });
 
 
