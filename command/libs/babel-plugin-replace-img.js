@@ -21,7 +21,7 @@ exports.default = function ({ types: t }) {
                             if (replacePath) {
                                 path.replaceWithSourceString(`'${replacePath}'`);
                             } else {
-                                console.log('未找到图片：',pathVal);
+                                // console.log('未找到图片：',pathVal);
                             }
                         }
                     }catch(e){

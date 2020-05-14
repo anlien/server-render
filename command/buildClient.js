@@ -178,14 +178,29 @@ let runBuildClient = () => {
 
     // 编译的钩子，client端编译结束后，编译server
     // server端依赖于 asset-manifest.json 
+
     return new Promise((resolve, reject) => {
         compilerClient.run((err, stats) => {
-            const { errors } = stats.compilation;
-            if (errors && errors.length) {
-                console.log('err', errors[0]);
-                reject()
+
+            if (err) {
+                console.log('compilerClient err', err);
+                reject(err);
             }
-            resolve()
+            const compilerMessage = stats.toJson({}, true);
+            const { errors = [], warnings = [] } = compilerMessage;
+            if (errors.length) {
+                //比如parse失败 通常会返回两个同样的错误 一个parse fail一个module build
+                //fail 但是内容是一样的；我们只取第一个即可;
+                errors.length = 1;
+                return reject(new Error(errors.join('\n\n')));
+            }
+            if (warnings.length) {
+                console.log('Compiled with warnings.\n');
+                console.log(warnings.join('\n\n'));
+            } else {
+                console.log('Compiled successfully.\n');
+            }
+            resolve(stats)
         });
     });
 }

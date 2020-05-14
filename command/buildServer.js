@@ -14,15 +14,14 @@ const config = {
 
 
 function runBuildServer() {
-    console.log('runBuildServer', 'begin')
+    console.time('runBuildServer');
     let filesList = [];
     readFileList(config.readDir, filesList);
 
     // 编译文件
     compiling(filesList);
-    
-    console.log('runBuildServer', 'end')}
-// runBuildServer(); //引入就调用
+    console.timeEnd('runBuildServer');
+}
 
 module.exports = {
     runBuildServer

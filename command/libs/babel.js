@@ -28,13 +28,14 @@ function compiling(filesList = []) {
 
     const filterJsFileArr = filterFiles(filesList, 'js');
     filterJsFileArr.forEach(filePath => {
+        //https://misc.flogisoft.com/bash/tip_colors_and_formatting
+        console.log(`\x1b[40m \x1b[32m babel编译：${ filePath } \x1b[0m`)
         babel.transformFile(filePath, babelNodeConfig, function (err, result) {
             if (err) {
-                console.log(err);
+                console.error(err);
             }
             if (result) {//有值再写
                 let code = result.code;
-                // console.log('result.code',result.code); ///若无法替换，则在此使用
                 writeFile(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir), code);
             }
         });
