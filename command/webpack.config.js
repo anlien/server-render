@@ -102,7 +102,7 @@ const jsLoader = {
     }
 }
 
-const getWebConfig = {
+const WebConfig = {
     mode: 'development',
     target: 'web',
     cache: true,
@@ -111,8 +111,8 @@ const getWebConfig = {
     output: {
         pathinfo: true,
         path: clientConfig.buildDir,
-        filename: 'js/[name].[chunkhash:8].js',
-        chunkFilename: 'js/[name].[chunkhash:8].js',//非入口依赖文件, 使用 chunkhash 而非 hash
+        filename: 'js/[name].[hash:8].js',
+        chunkFilename: 'js/[name].[hash:8].js',//非入口依赖文件, 使用 chunkhash 而非 hash
         publicPath: '/'//暂时没有域名的问题
     },
     optimization: {
@@ -156,6 +156,7 @@ const getWebConfig = {
             }]
     },
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             __Client__: true
@@ -170,35 +171,4 @@ const getWebConfig = {
     ]
 }
 
-
-
-let runBuildClient = () => {
-    let compilerClient = webpack(getWebConfig);
-    // 编译的钩子，client端编译结束后，编译server
-    // server端依赖于 asset-manifest.json 
-    return new Promise((resolve, reject) => {
-        compilerClient.run((err, stats) => {
-
-            if (err) {
-                console.log('compilerClient err', err);
-                reject(err);
-            }
-            const compilerMessage = stats.toJson({}, true);
-            const { errors = [], warnings = [] } = compilerMessage;
-            if (errors.length) {
-                //比如parse失败 通常会返回两个同样的错误 一个parse fail一个module build
-                //fail 但是内容是一样的；我们只取第一个即可;
-                errors.length = 1;
-                return reject(new Error(errors.join('\n\n')));
-            }
-            if (warnings.length) {
-                console.log('Compiled with warnings.\n');
-                console.log(warnings.join('\n\n'));
-            } else {
-                console.log('Compiled successfully.\n');
-            }
-            resolve({stats,compilerClient})
-        });
-    });
-}
-exports.default = runBuildClient;
+module.exports = WebConfig;

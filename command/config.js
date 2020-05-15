@@ -24,7 +24,7 @@ const clientConfig = {
     //     detail: getRelativePath('src/client/pages/detail/index.js')
     // }
     entryJs: {
-        index: getRelativePath('src/client/index.js')
+        index: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000&overlay=false', getRelativePath('src/client/index.js')]
     },
     assetManifest: getRelativePath('dist/www/asset-manifest.json')
 }
