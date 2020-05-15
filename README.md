@@ -35,7 +35,7 @@ package.json
     "@babel/preset-react": "^7.9.4"
   }
 ```
-1. 运行 npm run build & node dist/server/index.js 直接可以运行。这个就是简单的服务端渲染。
+1. 运行 npm run build & node dist/server/index.js 直接可以运行
 
 # 第二版
 node端使用babel编译。client使用webpack编译。
@@ -47,5 +47,7 @@ node端使用babel编译。client使用webpack编译。
 * [visitor 参数](https://github.com/babel/babel/blob/master/packages/babel-types/src/definitions/es2015.js)
 
 # 图片问题
-* 暂时只支持 require('*.png')
-* 资源最好不要重名，输出asset-manifest无法区分
+* 图片资源最好不要重名，输出asset-manifest无法区分
+
+# 单服务与双服务
+本项目是一个同构项目，也就是node与web都进行渲染，也就是说，若对一个文件修改则webpack和node端都需要编译。编译的问题好解决，问题是nodejs需要重启，这就会造成一些热替换的问题。还是启动双服务较为妥当。

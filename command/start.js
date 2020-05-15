@@ -48,27 +48,28 @@ function printFileSizesAfterBuild(webpackStats, buildFolder, isGzipSize) {
     });
 }
 
+let nodeHandle = null;
 function startNode() {
-    console.log(process.cwd());
+    if (nodeHandle) {
+        nodeHandle.kill();
+    }
     const { spawn } = require('child_process');
-    const ls = spawn('node', ['./dist/server/server/index.js']);
+    nodeHandle = spawn('node', ['./dist/server/server/index.js']);
 
-    ls.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
-    });
+    function print(data) {
+        const decoder = new StringDecoder('utf8');
+        const cent = Buffer.from(data);
+        console.log(decoder.write(cent));
+    }
 
-    ls.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-    });
+    nodeHandle.stdout.on('data', print);
+    nodeHandle.stderr.on('data', print);
+    process.stdin.pipe(nodeHandle.stdin);
 
-    ls.on('close', (code) => {
-        console.log(`子进程退出，使用退出码 ${code}`);
-    });
 }
 
 
 console.time('runBuildClient');
-
 buildClient().then(({ stats, compilerClient }) => {
     console.timeEnd('runBuildClient');
     console.log('File sizes:\n');
@@ -97,8 +98,11 @@ function webpackWatch(compilerClient) {
             let timesTamps = Array.from(fileTimestamps);
             timesTamps.sort((a, b) => b[1] - a[1]);
             const [filePath, changeTime] = timesTamps[0];
-            console.log('webpack 编译：',filePath);
+            console.log('webpack 编译：', filePath);
+
             compiling([filePath]);
+
+            startNode();//重启node
         }
     });
 }
