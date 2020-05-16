@@ -109,8 +109,9 @@ const WebConfig = {
     devtool: 'none',
     entry: clientConfig.entryJs,//在config中 设置入口
     output: {
-        pathinfo: true,
         path: clientConfig.buildDir,
+        hotUpdateChunkFilename: 'js/[id].[hash].hot-update.js',
+        hotUpdateMainFilename: 'js/[hash].hot-update.json',
         filename: 'js/[name].[hash:8].js',
         chunkFilename: 'js/[name].[hash:8].js',//非入口依赖文件, 使用 chunkhash 而非 hash
         publicPath: '/'//暂时没有域名的问题
@@ -156,6 +157,7 @@ const WebConfig = {
             }]
     },
     plugins: [
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({

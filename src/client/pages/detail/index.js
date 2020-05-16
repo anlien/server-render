@@ -9,7 +9,7 @@ class Detail extends React.Component {
     }
     render() {
         return <div className='wrap'>
-            <img src={tupImg} />这是出 UP 了错了？详 情页 C<span onClick={this.onClickHandle}>可以点击的</span>
+            <img src={tupImg} />这 是 出 UP 了 错了 ？详 情页 C<span onClick={this.onClickHandle}>可以点击的</span>
         </div>
     }
 }
