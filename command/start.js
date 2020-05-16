@@ -57,9 +57,9 @@ function startNode() {
     nodeHandle = spawn('node', ['./dist/server/server/index.js']);
 
     function print(data) {
-        const decoder = new StringDecoder('utf8');
-        const cent = Buffer.from(data);
-        console.log(decoder.write(cent));
+        // const decoder = new StringDecoder('utf8');
+        // const cent = Buffer.from(data);
+        console.log(data);
     }
 
     nodeHandle.stdout.on('data', print);

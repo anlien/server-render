@@ -9,7 +9,7 @@ class Detail extends React.Component {
     }
     render() {
         return <div className='wrap'>
-            <img src={tupImg} />这是详情页 C<span onClick={this.onClickHandle}>可以点击的</span>
+            <img src={tupImg} />这是 EE详情页 C<span onClick={this.onClickHandle}>可以点击的</span>
         </div>
     }
 }
