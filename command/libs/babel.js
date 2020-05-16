@@ -25,7 +25,6 @@ const babelNodeConfig = {
 
 // 编译js代码
 function compiling(filesList = []) {
-
     const filterJsFileArr = filterFiles(filesList, 'js');
     filterJsFileArr.forEach(filePath => {
         //https://misc.flogisoft.com/bash/tip_colors_and_formatting

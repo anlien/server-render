@@ -22,7 +22,9 @@ module.exports = {
     // openPage: '/different/page',打开的页面
     // quiet: true
     writeToDisk: (filePath) => {//两个服务的媒介
+        console.log(filePath);
         return /asset-manifest\.json$/.test(filePath);
     },
-    sockPort: 3001
+    sockPort: 3001,
+    serverSideRender: true //生成asset-manifest.json
 }

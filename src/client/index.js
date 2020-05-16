@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, matchPath } from "react-router-dom";
 import routes from './routes';
 import PropTypes from 'prop-types';
+import { hot } from 'react-hot-loader';
 
 function Loading() {
     return <div>loading</div>;
@@ -67,6 +68,8 @@ class App extends React.Component {
     }
 }
 
+const HotApp = hot(module)(App)
+
 //将异步组件变为同步组件
 const [machRouter = null] = routes.filter(item => {
     const { isExact = false } = matchPath(location.pathname, item.path) || {};
@@ -79,6 +82,6 @@ if (machRouter) {
         machRouter.MachComponent = data.default; //可以使用组件渲染
     }).then(() => {
         //延迟渲染
-        ReactDOM.hydrate(<BrowserRouter><App></App></BrowserRouter>, document.getElementById("root"))
+        ReactDOM.hydrate(<BrowserRouter><HotApp></HotApp></BrowserRouter>, document.getElementById("root"))
     })
 }

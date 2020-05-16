@@ -4,6 +4,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const { clientConfig } = require('./config');
 const TerserPlugin = require('terser-webpack-plugin'); //精简代码
 
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 //Solves extract-text-webpack-plugin CSS duplication problem
 //https://github.com/NMFR/optimize-css-assets-webpack-plugin
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -98,7 +99,7 @@ const jsLoader = {
                 "@babel/preset-env"
             ]
         ],
-        "plugins": ["@babel/plugin-proposal-class-properties"]
+        "plugins": ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"]
     }
 }
 
@@ -108,11 +109,12 @@ const WebConfig = {
     cache: true,
     devtool: 'none',
     entry: clientConfig.entryJs,//在config中 设置入口
+    watch: true,
     output: {
         pathinfo: true,
         path: clientConfig.buildDir,
-        filename: 'js/[name].[hash:8].js',//hash
-        chunkFilename: 'js/[name].[hash:8].js',//非入口依赖文件, 使用 chunkhash 而非 hash
+        filename: 'js/[name].[hash].js',//hash
+        chunkFilename: 'js/[name].[hash].js',//非入口依赖文件, 使用 chunkhash 而非 hash:8
         publicPath: 'http://localhost:3001/'//暂时没有域名的问题
     },
     optimization: {
@@ -156,8 +158,12 @@ const WebConfig = {
             }]
     },
     plugins: [
+        new CaseSensitivePathsPlugin(),
+        // 当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
+        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
+        // new webpack.NoEmitOnErrorsPlugin(),
+
         new webpack.DefinePlugin({
             __Client__: true
         }),
