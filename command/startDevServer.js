@@ -1,9 +1,10 @@
+const { StringDecoder } = require('string_decoder');
+const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./webpack.config');
 const compiler = webpack(webpackConfig);
 const devServerConfig = require('./webpack.deserver.config');
-const path = require('path');
 const { runBuildServer } = require('./buildServer');
 const { compiling } = require('./libs/babel');
 const { writeFile, getRelativePath } = require('./libs/files');
@@ -67,12 +68,14 @@ compiler.hooks.done.tap('BuildStatsPlugin', (stats) => {
 
 devServer.invalidate(() => {
     isInit = true;//初始完
-    console.log('-----------------------编译后执行--------------------------');
     console.time('build server');
-    runBuildServer();
+    runBuildServer().then(data => {
+        if (data.every(item => item)) {
+            console.log('启动node服务');
+            startNode();
+        }
+    });
     console.timeEnd('build server');
-    console.log('启动node服务');
-    startNode();
 });
 
 
@@ -85,9 +88,9 @@ function startNode() {
     nodeHandle = spawn('node', ['./dist/server/server/index.js']);
 
     function print(data) {
-        // const decoder = new StringDecoder('utf8');
+        const decoder = new StringDecoder('utf8');//解码
         const cent = Buffer.from(data);
-        console.log(cent);
+        console.log(decoder.write(cent));
     }
 
     nodeHandle.stdout.on('data', print);
