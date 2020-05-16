@@ -128,13 +128,12 @@ console.time('runBuildClient');
         const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
         const fs = res.locals.fs;
         const outputPath = res.locals.webpackStats.toJson().outputPath;
-        console.log('res.localsres.localsres.locals',assetsByChunkName);
         const {home,index,vendor} = assetsByChunkName;
         const cssModule = home.filter(item => ".css" === path.extname(item));
         const jsModule = [index,vendor].concat(home.filter(item => ".js" == path.extname(item)))
+        console.log('req.url',req.url);
         // Then use `assetsByChunkName` for server-side rendering
         // For example, if you have only one main chunk:
-        console.log('normalizeAssets(assetsByChunkName.main)',cssModule);
        res.send(`
                 <html>
                 <head>
