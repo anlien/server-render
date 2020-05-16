@@ -80,7 +80,10 @@ instance.invalidate(() => {
 app.use(webpackHotMiddleware(compilerClient, {
     log: console.log, path: '/__webpack_hmr',
     heartbeat: 10 * 1000,
-    reporter: () => { console.log('---------diaoyong???-----------------') }
+    writeToDisk: (filePath) => {
+        return /asset-manifest\.json$/.test(filePath);
+     }
+
 }));
 // (compilation, done) => {
 //     hotMiddleware.publish({ action: 'compiling' })

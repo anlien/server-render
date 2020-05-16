@@ -114,7 +114,7 @@ const WebConfig = {
         hotUpdateMainFilename: 'js/[hash].hot-update.json',
         filename: 'js/[name].[hash:8].js',
         chunkFilename: 'js/[name].[hash:8].js',//非入口依赖文件, 使用 chunkhash 而非 hash
-        publicPath: '/'//暂时没有域名的问题
+        publicPath: 'http://localhost:3000/'//暂时没有域名的问题
     },
     optimization: {
         // minimize: true// Tell webpack to minimize the bundle using the UglifyjsWebpackPlugin.This is true by default in production mode.
