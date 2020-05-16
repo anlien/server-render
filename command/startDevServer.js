@@ -1,5 +1,6 @@
 const { StringDecoder } = require('string_decoder');
 const path = require('path');
+const chokidar = require('chokidar');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./webpack.config');
@@ -7,9 +8,11 @@ const compiler = webpack(webpackConfig);
 const devServerConfig = require('./webpack.deserver.config');
 const { runBuildServer } = require('./buildServer');
 const { compiling } = require('./libs/babel');
-const { writeFile, getRelativePath } = require('./libs/files');
+const { writeFile, resolvePath, mkdirsSync } = require('./libs/files');
+const { serverConfigDir } = require('./config');
+
+
 let isInit = false;//是否初始
-const port = 3001;
 
 const devServer = new WebpackDevServer(compiler, devServerConfig);
 // console.log(devServer.app.use);
@@ -22,7 +25,6 @@ compiler.hooks.watchRun.callAsync = (compilation, done) => {
         const [filePath] = timesTamps[0];
         console.log('babel 编译：', filePath);
         compiling([filePath]);
-        // startNode();//重启node
     }
     done();
 }
@@ -57,7 +59,7 @@ compiler.hooks.done.tap('BuildStatsPlugin', (stats) => {
             manifest[`media/${filename}${ext}`] = publicPath + item;
         }
     });
-    writeFile(getRelativePath('../dist/asset-manifest.json'), manifest, (err) => {
+    writeFile(resolvePath('../dist/asset-manifest.json'), manifest, (err) => {
         if (err) {
             console.error(err);
             return;
@@ -65,7 +67,7 @@ compiler.hooks.done.tap('BuildStatsPlugin', (stats) => {
         startNode();
     })
 });
-
+//webpack-dev-middle
 devServer.invalidate(() => {
     isInit = true;//初始完
     console.time('build server');
@@ -98,7 +100,38 @@ function startNode() {
     process.stdin.pipe(nodeHandle.stdin);
 }
 
-
-devServer.listen(port, (error) => {
+//启动服务 监听在路由中的文件
+devServer.listen(devServerConfig.port, (error) => {
     if (error) console.log('启动失败');
 })
+
+//监听服务端，不在路由中的文件
+const watcher = chokidar.watch(resolvePath('../src/server'), {
+    ignored: /(^|[\/\\])\../, // ignore dotfiles
+    persistent: true
+});
+
+
+let compilingHandle = null;
+// Add event listeners.
+watcher.on('change', filePath => {
+    console.log(`File ${filePath} has been change`);
+    if (!compilingHandle) {
+        compilingHandle = setTimeout(() => {
+            compiling([filePath]);
+            compilingHandle = null;
+        }, 500);
+    }
+}).on('unlink', filePath => {
+    console.log(`File ${filePath} has been removed`);
+}).on('addDir', filePath => {
+    console.log('创建目录：', path.normalize(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir)));
+    mkdirsSync(path.normalize(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir)));//创建目录
+});
+
+['SIGINT', 'SIGTERM'].forEach(function (sig) {
+    process.on(sig, function () {
+        devServer.close();
+        process.exit();
+    });
+});

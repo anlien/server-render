@@ -46,14 +46,14 @@ function mkdirsSync(dirname) {
 //process.cwd()  与命令的运行位置有关系
 //写文件
 function writeFile(_path, writeData, callBack) {
-    if (!writeData) console.error('请添加数据');
+    // if (!writeData) console.error('请添加数据');
     let data = writeData;
-    if (typeof data !== "string") {
+    if (data && typeof data !== "string") {
         data = JSON.stringify(writeData);
     }
     let relativePath = _path;
     if (path.isAbsolute(_path)) {
-        //绝对路径抓为相对路径
+        //绝对路径转为相对路径
         relativePath = path.relative(process.cwd(), _path);
     }
     let dirPath = path.dirname(relativePath);
@@ -73,15 +73,16 @@ function writeFile(_path, writeData, callBack) {
 
 //获得相对路径
 //预期在 server-render 和server-render/command 执行 startDevServer获得的路径一致
-function getRelativePath(dirPath) {
-    let parsePath = path.parse(__dirname);
-    const relativePath = path.relative(__dirname, parsePath.dir) || '.';
-    return path.resolve(__dirname, `${relativePath}/${dirPath}`);
+function resolvePath(dirPath, dirname = __dirname) {
+    let parsePath = path.parse(dirname);
+    const relativePath = path.relative(dirname, parsePath.dir) || '.';
+    return path.resolve(dirname, `${relativePath}/${dirPath}`);
 }
 
 module.exports = {
     readFileList,
     filterFiles,
     writeFile,
-    getRelativePath
+    resolvePath,
+    mkdirsSync
 }

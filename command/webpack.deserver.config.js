@@ -24,6 +24,7 @@ module.exports = {
     writeToDisk: (filePath) => {//两个服务的媒介
         return /asset-manifest\.json$/.test(filePath);
     },
+    port: 3001,
     sockPort: 3001,
     serverSideRender: true //生成asset-manifest.json
 }

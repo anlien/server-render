@@ -1,34 +1,22 @@
 
-const path = require('path');
-//返回相对地址
-function getRelativePath(dirPath) {
-    let parsePath = path.parse(__dirname);
-    const relativePath = path.relative(__dirname, parsePath.dir) || '.';
-    return path.resolve(__dirname, `${relativePath}/${dirPath}`);
-}
+const { resolvePath } = require('./libs/files');
 // // Make sure any symlinks in the project folder are resolved:
 // // https://github.com/facebookincubator/create-react-app/issues/637
 // const appDirectory = fs.realpathSync(process.cwd());
 // const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
-
 const serverConfigDir = {
     srcDir: 'src',
-    buildDir: 'dist/server'
+    buildDir: 'dist/server',
+    watchNodeDir: resolvePath('src/server', __dirname)
 }
 
 const clientConfig = {
-    srcDir: getRelativePath('src/client'),
-    buildDir: getRelativePath('dist/www'),
-    // entryJs: {
-    //     home: getRelativePath('src/client/pages/home/index.js'),
-    //     detail: getRelativePath('src/client/pages/detail/index.js')
-    // }
+    srcDir: resolvePath('src/client', __dirname),
+    buildDir: resolvePath('dist/www', __dirname),
     entryJs: {
-        index: getRelativePath('src/client/index.js')
-    },
-    assetManifest: getRelativePath('dist/www/asset-manifest.json')
+        index: resolvePath('src/client/index.js', __dirname)
+    }
 }
-
 
 module.exports = {
     serverConfigDir,

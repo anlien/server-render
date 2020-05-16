@@ -5,6 +5,8 @@ const { serverConfigDir } = require('../config');
 const babelPluginIgnoreMedia = require('./babel-plugin-ignore-media').default;
 const babelPluginReplaceImg = require('./babel-plugin-replace-img').default;
 const fs = require("fs");
+//服务端使用的babel编译
+//webpack 中的另外配置
 
 const babelNodeConfig = {
     "presets": [
@@ -20,7 +22,6 @@ const babelNodeConfig = {
     ],
     "plugins": ["@babel/plugin-proposal-class-properties", babelPluginIgnoreMedia, babelPluginReplaceImg]
 };
-
 
 
 // 编译js代码
