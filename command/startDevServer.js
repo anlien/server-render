@@ -10,7 +10,13 @@ const { runBuildServer } = require('./buildServer');
 const { compiling } = require('./libs/babel');
 const { writeFile, resolvePath, mkdirsSync } = require('./libs/files');
 const { serverConfigDir } = require('./config');
+const runOpen = require('webpack-dev-server/lib/utils/runOpen');
+//环境变量
+process.env.BABEL_ENV = 'development';
+process.env.NODE_ENV = 'development';
+// global.env_prod = true;
 
+const openPage = 'http://localhost:9000/';
 
 let isInit = false;//是否初始
 
@@ -76,7 +82,9 @@ devServer.invalidate(() => {
             console.log('启动node服务');
             startNode();
         }
-    });
+    }).then(() => {
+        runOpen(openPage, { open: true }, console);
+    })
     console.timeEnd('build server');
 });
 

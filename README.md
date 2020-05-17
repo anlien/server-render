@@ -51,3 +51,20 @@ node端使用babel编译。client使用webpack编译。
 
 # 单服务与双服务
 本项目是一个同构项目，也就是node与web都进行渲染，也就是说，若对一个文件修改则webpack和node端都需要编译。编译的问题好解决，问题是nodejs需要重启，这就会造成一些热替换的问题。还是启动双服务较为妥当。
+
+# 生产环境添加css不能热更新的解决思路
+* 每个页面都添加一个[filename].css文件，有则可以热更新。
+* 使用 [css-hot-loader](https://www.npmjs.com/package/css-hot-loader) 插件。[参考](https://github.com/neutrinojs/neutrino/issues/802)
+* 使用 CSS模块 可以使用模块参数来启用/禁用，[参考](https://60devs.com/webpack-hot-reload-css-modules.html)
+* 使用style-loader[https://github.com/webpack-contrib/mini-css-extract-plugin/issues/34]
+* 使用 [extract-css-chunks-webpack-plugin](https://www.npmjs.com/package/extract-css-chunks-webpack-plugin) hmr
+* 生产环境 将css 打包在一起，正式环境则多个包
+* react-hot-loader readme中 ： webpack ExtractTextPlugin is not compatible with React Hot Loader. Please disable it in development. 
+
+1. open 浏览器（完成）
+2. 服务端添加测试
+3. 测试css
+4. 测试页面
+5. 环境 配置
+6. css base64
+7. 接口的方法。加载数据

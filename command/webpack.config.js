@@ -37,21 +37,23 @@ const imgLoader = {
 // Opt-in support for SASS (using .scss or .sass extensions).
 // By default we support SASS Modules with the
 // extensions .module.scss or .module.sass
-const shouldUseSourceMap = true;
+const shouldUseSourceMap = false;
 const scssLoader = {
     test: /\.(scss|sass)$/,
     exclude: /\.module\.(scss|sass)$/,
-    use: [{
+    use: [
+    {
         loader: MiniCssExtractPlugin.loader,
-        // options: Object.assign(
-        //     {}
-        //     // shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined
-        // ),
-    }, {
+        options: {
+            hmr: true,
+            reloadAll: true
+        },
+    }, 
+    {
         loader: require.resolve('css-loader'),
         options: {
             importLoaders: 2,
-            sourceMap: true,
+            sourceMap: shouldUseSourceMap,
         }
     }, {
         // Options for PostCSS as we reference these options twice
@@ -93,6 +95,8 @@ const jsLoader = {
     // include: clientConfig.srcDir,
     loader: require.resolve('babel-loader'),
     options: {
+        cacheDirectory: true,
+        babelrc: false,
         "presets": [
             "@babel/preset-react",
             [
@@ -108,8 +112,8 @@ const WebConfig = {
     target: 'web',
     cache: true,
     devtool: 'none',
+    // devtool: 'source-map',
     entry: clientConfig.entryJs,//在config中 设置入口
-    watch: true,
     output: {
         pathinfo: true,
         path: clientConfig.buildDir,
@@ -135,7 +139,13 @@ const WebConfig = {
                     name: 'vendor',
                     chunks: 'all'
                     // priority: -10
-                }
+                },
+                // styles: {
+                //     name: 'styles',
+                //     test: /\.css$/,
+                //     chunks: 'all',
+                //     enforce: true,
+                // },
             },
             chunks: 'all'
         },
@@ -151,9 +161,9 @@ const WebConfig = {
             {
                 oneOf: [
                     imgLoader,//不能使用base64 babel暂时没做不兼容
-                    jsLoader,
                     scssLoader,
-                    fileLoader
+                    fileLoader,
+                    jsLoader
                 ]
             }]
     },
@@ -168,8 +178,12 @@ const WebConfig = {
             __Client__: true
         }),
         new MiniCssExtractPlugin({
-            filename: 'css/[name].[contenthash:8].css',
-            chunkFilename: 'css/[name].[contenthash:8].chunk.css',
+            disable: NODE_ENV !== 'production',
+            // filename: 'css/[name].css',//May contain [contenthash:8]  `[name]`, `[id]`, `hash` and `[chunkhash]`
+            // chunkFilename: 'css/[name].css',
+            filename: 'css/[name].[hash].css',//hash
+            chunkFilename: '[name].[hash].hot-update.css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
+            ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
         new ManifestPlugin({
             fileName: '../asset-manifest.json'

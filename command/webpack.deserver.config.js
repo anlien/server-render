@@ -26,5 +26,5 @@ module.exports = {
     },
     port: 3001,
     sockPort: 3001,
-    serverSideRender: true //生成asset-manifest.json
+    serverSideRender: true, //生成asset-manifest.json。没有效果
 }

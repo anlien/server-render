@@ -10,16 +10,17 @@ export default async function sendHTML({ req, res }, renderData) {
     res.end(req.method === 'HEAD' ? null : pageHtml)
 }
 async function renderPage({ html, pageData, assetName }) {
-    let baseVendorArr = ["index.js","vendor.js"].map(item => {
+    let baseVendorArr = ["index.js", "vendor.js"].map(item => {
         return assetManifest[item];//基础数据
     });
 
     let moduleJsArr = [`${assetName}.js`].map(item => {
         return assetManifest[item];// 获取js
-    });
+    }).filter(Boolean);
     let moduleCssArr = [`${assetName}.css`].map(item => {
         return assetManifest[item];// 获取css
-    });
+    }).filter(Boolean);
+    console.log('--------------------moduleCssArr---------------------------', moduleCssArr);
     let pageHtml = '';
     const data = {
         tdk: '测试网站',

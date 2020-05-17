@@ -1,6 +1,7 @@
 import React from 'react';
-import tupImg from './assets/tup.png';
 import PropTypes from 'prop-types';
+import tupImg from './assets/tup.png';
+// import './index.scss';
 class Detail extends React.Component {
     onClickHandle = () => {
         const { history } = this.context;
