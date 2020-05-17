@@ -61,6 +61,9 @@ node端使用babel编译。client使用webpack编译。
 * 生产环境 将css 打包在一起，正式环境则多个包
 * react-hot-loader readme中 ： webpack ExtractTextPlugin is not compatible with React Hot Loader. Please disable it in development. 
 
+[未解的问题：ModuleConcatenation bailout: Cannot concat with ](https://github.com/webpack/webpack/issues/5408);
+
+
 1. open 浏览器（完成）
 2. 服务端添加测试
 3. 测试css（）

@@ -93,7 +93,6 @@ let buildClient = () => {
 console.time('runBuildClient');
 buildClient().then(({ stats }) => {
     console.timeEnd('runBuildClient');
-
     printFileSizesAfterBuild(stats, clientConfig.buildDir, false);
     console.log('编译server端代码');
     runBuildServer();

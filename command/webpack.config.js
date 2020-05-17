@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+const webpack = require('../node_modules/webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { clientConfig } = require('./config');
@@ -97,7 +97,11 @@ const jsLoader = {
         "presets": [
             "@babel/preset-react",
             [
-                "@babel/preset-env"
+                "@babel/preset-env", {
+                    "targets": {
+                        "ie": "9"
+                    }
+                }
             ]
         ],
         "plugins": ["@babel/plugin-proposal-class-properties"]//
@@ -124,26 +128,26 @@ const WebConfig = {
     },
     optimization: {
         minimizer: [
-            new TerserPlugin({//https://github.com/webpack-contrib/terser-webpack-plugin
+            new TerserPlugin({
                 cache: !isProduction,
                 sourceMap: !isProduction,
-                extractComments: false,//移除注释
+                extractComments: true,
                 terserOptions: {
                     ecma: "2015",
-                    mangle: true, // Note `mangle.properties` is `false` by default.
+                    mangle: true,
                     module: false,
                     ie8: false,
                     safari10: false,
                 }
             }),
-            new OptimizeCSSAssetsPlugin({ // 用于优化css文件
+            new OptimizeCSSAssetsPlugin({ 
                 assetNameRegExp: /\.css$/g,
                 cssProcessorOptions: {
                     safe: true,
-                    autoprefixer: { disable: true }, // autoprefixer: { disable: true }，禁用掉cssnano对于浏览器前缀的处理
+                    autoprefixer: { disable: true },
                     mergeLonghand: false,
                     discardComments: {
-                        removeAll: true // 移除注释
+                        removeAll: true
                     }
                 },
                 canPrint: true
@@ -160,7 +164,7 @@ const WebConfig = {
             automaticNameMaxLength: 30,
             name: true,
             cacheGroups: {
-                vendor: {//使用的模块，固定下来
+                vendor: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendor',
                     chunks: 'all'
@@ -175,10 +179,10 @@ const WebConfig = {
             },
             chunks: 'all'
         },
-        runtimeChunk: false,//runtime~ 文件
+        runtimeChunk: false,
         namedChunks: true,
         mergeDuplicateChunks: true,
-        occurrenceOrder: true, // To keep filename consistent between different modes (for example building only)  
+        occurrenceOrder: true, 
     },
     module: {
         rules: [
@@ -186,7 +190,7 @@ const WebConfig = {
             { parser: { requireEnsure: false } },
             {
                 oneOf: [
-                    imgLoader,//不能使用base64 babel暂时没做不兼容
+                    imgLoader,
                     scssLoader,
                     fileLoader,
                     jsLoader
@@ -194,6 +198,7 @@ const WebConfig = {
             }]
     },
     plugins: [
+        new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.DefinePlugin({
             __Client__: true,
             __ISPROD__: isProduction
@@ -213,7 +218,7 @@ if (!isProduction) {
 } else {
     WebConfig.plugins.push(new MiniCssExtractPlugin({
         filename: 'css/[name].[contenthash:8].css',//hash
-        chunkFilename: 'css/[name].[contenthash:8].css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
+        chunkFilename: 'css/[name].[contenthash:8].css',
         ignoreOrder: false, // Enable to remove warnings about conflicting order
     }));
 
