@@ -99,6 +99,7 @@ const jsLoader = {
             [
                 "@babel/preset-env", {
                     "targets": {
+                        "node": "current",
                         "ie": "9"
                     }
                 }

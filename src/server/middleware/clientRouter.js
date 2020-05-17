@@ -7,6 +7,7 @@ import sendHTML from './sendHTML';
 async function clientRouter({ req, res }, next) {
     const branch = matchRoutes(routes, req.url);
     const { route, match } = branch[0];
+    
     if (match.isExact) {
         const componentObj = await route.getComponent();
         const App = componentObj.default;

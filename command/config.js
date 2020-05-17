@@ -7,7 +7,7 @@ const { resolvePath } = require('./libs/files');
 const serverConfigDir = {
     srcDir: 'src',
     buildDir: 'dist/server',
-    watchNodeDir: resolvePath('src/server', __dirname)
+    watchNodeDir: '../src/server'
 }
 
 const clientConfig = {

@@ -60,7 +60,12 @@ class App extends React.Component {
     render() {
         return <Switch>{
             routes.map((route, index) => {
-                return <Route path={route.path} key={`route-${index}`} render={(routeProps) => <RouteComponent {...routeProps} {...route} />}></Route>
+                console.log(route);
+                const { path, getComponent, MachComponent } = route;
+                return <Route path={path} key={`route-${index}`}
+                    exact
+                    strict
+                    render={(routeProps) => <RouteComponent {...routeProps} getComponent={getComponent} MachComponent={MachComponent} />}></Route>
             })
         }</Switch>
     }
@@ -76,6 +81,7 @@ if (!__ISPROD__) {
 //将异步组件变为同步组件
 const [machRouter = null] = routes.filter(item => {
     const { isExact = false } = matchPath(location.pathname, item.path) || {};
+    console.log('item', item);
     return isExact ? item : false;
 });
 

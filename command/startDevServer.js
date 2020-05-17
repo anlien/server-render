@@ -1,3 +1,7 @@
+const envVal = process.env.BUILD_ENV === 'production' ? 'production' : 'development';
+process.env.BABEL_ENV = envVal
+process.env.NODE_ENV = envVal;
+
 const { StringDecoder } = require('string_decoder');
 const path = require('path');
 const chokidar = require('chokidar');
@@ -8,25 +12,22 @@ const compiler = webpack(webpackConfig);
 const devServerConfig = require('./webpack.deserver.config');
 const { runBuildServer } = require('./buildServer');
 const { compiling } = require('./libs/babel');
-const { writeFile, resolvePath, mkdirsSync } = require('./libs/files');
+const { resolvePath, mkdirsSync } = require('./libs/files');
 const { serverConfigDir } = require('./config');
 const runOpen = require('webpack-dev-server/lib/utils/runOpen');
 const { makeAssetManifest } = require('./libs/compilerClient_hook');
 
-//环境变量
-process.env.BABEL_ENV = 'development';
-process.env.NODE_ENV = 'development';
 // global.env_prod = true;
-
-const openPage = 'http://localhost:9000/';
 
 let isInit = false;//是否初始
 
 const devServer = new WebpackDevServer(compiler, devServerConfig);
-// console.log(devServer.app.use);
+
+// console.log(devServer.app.use);// 为express 添加中间件
 
 compiler.hooks.watchRun.callAsync = (compilation, done) => {
     const { fileTimestamps } = compilation;
+    console.log('fileTimestamps',fileTimestamps.size);
     if (fileTimestamps.size > 0) {
         let timesTamps = Array.from(fileTimestamps);
         timesTamps.sort((a, b) => b[1] - a[1]);
@@ -44,9 +45,10 @@ compiler.hooks.done.tap('BuildStatsPlugin', (stats) => {
     makeAssetManifest({
         stats,
         publicPath: webpackConfig.output.publicPath,
-        callback: ()=>{ startNode() }
+        callback: () => { startNode() }
     });
 });
+
 //webpack-dev-middle
 devServer.invalidate(() => {
     isInit = true;//初始完
@@ -57,7 +59,7 @@ devServer.invalidate(() => {
             startNode();
         }
     }).then(() => {
-        runOpen(openPage, { open: true }, console);
+        runOpen(devServerConfig.openPage, { open: true }, console);
     })
     console.timeEnd('build server');
 });
@@ -69,7 +71,7 @@ function startNode() {
         nodeHandle.kill();
     }
     const { spawn } = require('child_process');
-    nodeHandle = spawn('node', ['./dist/server/server/index.js']);
+    nodeHandle = spawn('node', [`./${serverConfigDir.buildDir}/server/index.js`]);
 
     function print(data) {
         const decoder = new StringDecoder('utf8');//解码
@@ -88,7 +90,7 @@ devServer.listen(devServerConfig.port, (error) => {
 })
 
 //监听服务端，不在路由中的文件
-const watcher = chokidar.watch(resolvePath('../src/server'), {
+const watcher = chokidar.watch(resolvePath(serverConfigDir.watchNodeDir), {
     ignored: /(^|[\/\\])\../, // ignore dotfiles
     persistent: true
 });
@@ -100,7 +102,11 @@ watcher.on('change', filePath => {
     console.log(`File ${filePath} has been change`);
     if (!compilingHandle) {
         compilingHandle = setTimeout(() => {
-            compiling([filePath]);
+            compiling([filePath]).then(data => {//更新后重启node
+                if (data.every(item => item)) {
+                    startNode();
+                }
+            })
             compilingHandle = null;
         }, 500);
     }

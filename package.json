@@ -6,7 +6,8 @@
   "scripts": {
     "build:prod": "cross-env BUILD_ENV=production npm run build",
     "build": "node command/build.js",
-    "start": "node command/startDevServer.js"
+    "start": "node command/startDevServer.js",
+    "start:prod": "cross-env BUILD_ENV=production npm run start"
   },
   "repository": {
     "type": "git",

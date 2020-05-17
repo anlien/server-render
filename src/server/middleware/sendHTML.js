@@ -1,7 +1,6 @@
 import ejs from 'ejs';
 import path from 'path';
 const assetManifest = require("../../../asset-manifest.json");
-
 export default async function sendHTML({ req, res }, renderData) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     const pageHtml = await renderPage(renderData);
