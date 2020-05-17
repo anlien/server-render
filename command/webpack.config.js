@@ -3,12 +3,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { clientConfig } = require('./config');
 const TerserPlugin = require('terser-webpack-plugin'); //精简代码
-
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 //Solves extract-text-webpack-plugin CSS duplication problem
 //https://github.com/NMFR/optimize-css-assets-webpack-plugin
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
+const shouldUseSourceMap = false;
 const fileLoader = {
     loader: require.resolve('file-loader'),
     // Exclude `js` files to keep "css" loader working as it injects
@@ -37,18 +37,19 @@ const imgLoader = {
 // Opt-in support for SASS (using .scss or .sass extensions).
 // By default we support SASS Modules with the
 // extensions .module.scss or .module.sass
-const shouldUseSourceMap = false;
 const scssLoader = {
     test: /\.(scss|sass)$/,
     exclude: /\.module\.(scss|sass)$/,
     use: [
-        {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-                hmr: true,
-                reloadAll: true
-            },
-        },
+        'style-loader',//开发阶段使用--写入到页面
+        // {
+        //     loader: MiniCssExtractPlugin.loader,
+        //     options: {
+        //         esModule: true
+        //         // hmr: true,
+        //         // reloadAll: true
+        //     },
+        // },
         {
             loader: require.resolve('css-loader'),
             options: {
@@ -103,7 +104,7 @@ const jsLoader = {
                 "@babel/preset-env"
             ]
         ],
-        "plugins": ["@babel/plugin-proposal-class-properties"]//"react-hot-loader/babel"
+        "plugins": ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"]//
     }
 }
 
@@ -181,8 +182,8 @@ const WebConfig = {
             // disable: NODE_ENV !== 'production',
             // filename: 'css/[name].css',//May contain [contenthash:8]  `[name]`, `[id]`, `hash` and `[chunkhash]`
             // chunkFilename: 'css/[name].css',
-            filename: 'css/[name].[hash].css',//hash
-            chunkFilename: 'css/[name].[hash].css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
+            filename: 'css/[name].[contenthash:8].css',//hash
+            chunkFilename: 'css/[name].[contenthash:8].css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
         new ManifestPlugin({

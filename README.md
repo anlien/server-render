@@ -63,8 +63,12 @@ node端使用babel编译。client使用webpack编译。
 
 1. open 浏览器（完成）
 2. 服务端添加测试
-3. 测试css
+3. 测试css（）
 4. 测试页面
 5. 环境 配置
 6. css base64
 7. 接口的方法。加载数据
+
+# 注意事项
+1. node渲染时没有css，所以同构不支持css module
+2. 图片不能重名。名字与位置无关。
