@@ -11,6 +11,8 @@ const { compiling } = require('./libs/babel');
 const { writeFile, resolvePath, mkdirsSync } = require('./libs/files');
 const { serverConfigDir } = require('./config');
 const runOpen = require('webpack-dev-server/lib/utils/runOpen');
+const { makeAssetManifest } = require('./libs/compilerClient_hook');
+
 //环境变量
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
@@ -39,39 +41,11 @@ compiler.hooks.watchRun.callAsync = (compilation, done) => {
 //此方法用于生成  asset-manifest.json
 compiler.hooks.done.tap('BuildStatsPlugin', (stats) => {
     if (!isInit) return;
-    const { assetsInfo } = stats.compilation;
-    const assetsInfoToArr = [];
-    const publicPath = webpackConfig.output.publicPath;
-
-    if (assetsInfo) {
-        assetsInfo.forEach((value, key) => {
-            if (!value.hotModuleReplacement) {//过滤 非热更新数据
-                assetsInfoToArr.push(key)
-            }
-        })
-    }
-
-    //生成 asset-manifest.json 中的数据
-    // 格式位webpack.config中filename: 'js/[name].[hash].js'
-    let manifest = {};
-    assetsInfoToArr.forEach(item => {
-        let parseFile = path.parse(item);
-        const { dir, name, ext } = parseFile;
-        if (dir === "js" || dir === "css") {
-            const filename = name.split('.')[0];
-            manifest[`${filename}${ext}`] = publicPath + item;
-        } else if (dir === "media") {
-            const filename = name.split('.')[0];
-            manifest[`media/${filename}${ext}`] = publicPath + item;
-        }
+    makeAssetManifest({
+        stats,
+        publicPath: webpackConfig.output.publicPath,
+        callback: ()=>{ startNode() }
     });
-    writeFile(resolvePath('../dist/asset-manifest.json'), manifest, (err) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        startNode();
-    })
 });
 //webpack-dev-middle
 devServer.invalidate(() => {

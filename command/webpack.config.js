@@ -6,9 +6,13 @@ const TerserPlugin = require('terser-webpack-plugin'); //精简代码
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 //Solves extract-text-webpack-plugin CSS duplication problem
 //https://github.com/NMFR/optimize-css-assets-webpack-plugin
+
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const shouldUseSourceMap = false;
+const isProduction = process.env.NODE_ENV == 'production';
+const shouldUseSourceMap = !isProduction;
+const { port } = require('./webpack.deserver.config');
+
 const fileLoader = {
     loader: require.resolve('file-loader'),
     // Exclude `js` files to keep "css" loader working as it injects
@@ -17,7 +21,7 @@ const fileLoader = {
     // by webpacks internal loaders.
     exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
     options: {
-        name: 'media/[name].[hash:8].[ext]'
+        name: 'media/[name].[contenthash:8].[ext]'
     },
 };
 
@@ -41,15 +45,7 @@ const scssLoader = {
     test: /\.(scss|sass)$/,
     exclude: /\.module\.(scss|sass)$/,
     use: [
-        'style-loader',//开发阶段使用--写入到页面
-        // {
-        //     loader: MiniCssExtractPlugin.loader,
-        //     options: {
-        //         esModule: true
-        //         // hmr: true,
-        //         // reloadAll: true
-        //     },
-        // },
+        isProduction ? MiniCssExtractPlugin.loader : 'style-loader',//style-loader 开发阶段使用--写入到页面
         {
             loader: require.resolve('css-loader'),
             options: {
@@ -104,26 +100,55 @@ const jsLoader = {
                 "@babel/preset-env"
             ]
         ],
-        "plugins": ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"]//
+        "plugins": ["@babel/plugin-proposal-class-properties"]//
     }
 }
 
+//开发环境
+if (!isProduction) {
+    jsLoader.options.plugins.push("react-hot-loader/babel");
+}
+
 const WebConfig = {
-    mode: 'development',
+    mode: isProduction ? 'production' : 'development',
     target: 'web',
     cache: true,
-    devtool: 'none',
-    // devtool: 'source-map',
+    devtool: isProduction ? 'none' : 'source-map',
     entry: clientConfig.entryJs,//在config中 设置入口
     output: {
         pathinfo: true,
         path: clientConfig.buildDir,
-        filename: 'js/[name].[hash].js',//hash
-        chunkFilename: 'js/[name].[hash].js',//非入口依赖文件, 使用 chunkhash 而非 hash:8
-        publicPath: 'http://localhost:3001/'//暂时没有域名的问题
+        filename: `js/[name].[${isProduction ? 'chunkhash:8' : 'hash'}].js`,//hash
+        chunkFilename: `js/[name].[${isProduction ? 'chunkhash:8' : 'hash'}].js`,//非入口依赖文件, 使用 chunkhash 而非 hash:8
+        publicPath: isProduction ? '/' : `//localhost:${port}/`//暂时没有域名的问题
     },
     optimization: {
-        // minimize: true// Tell webpack to minimize the bundle using the UglifyjsWebpackPlugin.This is true by default in production mode.
+        minimizer: [
+            new TerserPlugin({//https://github.com/webpack-contrib/terser-webpack-plugin
+                cache: !isProduction,
+                sourceMap: !isProduction,
+                extractComments: false,//移除注释
+                terserOptions: {
+                    ecma: "2015",
+                    mangle: true, // Note `mangle.properties` is `false` by default.
+                    module: false,
+                    ie8: false,
+                    safari10: false,
+                }
+            }),
+            new OptimizeCSSAssetsPlugin({ // 用于优化css文件
+                assetNameRegExp: /\.css$/g,
+                cssProcessorOptions: {
+                    safe: true,
+                    autoprefixer: { disable: true }, // autoprefixer: { disable: true }，禁用掉cssnano对于浏览器前缀的处理
+                    mergeLonghand: false,
+                    discardComments: {
+                        removeAll: true // 移除注释
+                    }
+                },
+                canPrint: true
+            })
+        ],
         splitChunks: {
             chunks: 'async',
             minSize: 30000,
@@ -169,27 +194,28 @@ const WebConfig = {
             }]
     },
     plugins: [
-        new CaseSensitivePathsPlugin(),
-        // 当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
-        new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        // new webpack.NoEmitOnErrorsPlugin(),
-
         new webpack.DefinePlugin({
-            __Client__: true
-        }),
-        new MiniCssExtractPlugin({
-            // disable: NODE_ENV !== 'production',
-            // filename: 'css/[name].css',//May contain [contenthash:8]  `[name]`, `[id]`, `hash` and `[chunkhash]`
-            // chunkFilename: 'css/[name].css',
-            filename: 'css/[name].[contenthash:8].css',//hash
-            chunkFilename: 'css/[name].[contenthash:8].css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
-            ignoreOrder: false, // Enable to remove warnings about conflicting order
-        }),
-        new ManifestPlugin({
-            fileName: '../asset-manifest.json'
+            __Client__: true,
+            __ISPROD__: isProduction
         })
     ]
 }
 
+//开发环境
+if (!isProduction) {
+    WebConfig.plugins.unshift(new ManifestPlugin({
+        fileName: '../asset-manifest.json'
+    }));
+    // 当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
+    WebConfig.plugins.unshift(new webpack.HotModuleReplacementPlugin());
+    WebConfig.plugins.unshift(new webpack.NamedModulesPlugin());//倒着 
+    WebConfig.plugins.unshift(new CaseSensitivePathsPlugin());
+} else {
+    WebConfig.plugins.push(new MiniCssExtractPlugin({
+        filename: 'css/[name].[contenthash:8].css',//hash
+        chunkFilename: 'css/[name].[contenthash:8].css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
+        ignoreOrder: false, // Enable to remove warnings about conflicting order
+    }));
+
+}
 module.exports = WebConfig;
