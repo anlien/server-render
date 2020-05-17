@@ -42,45 +42,45 @@ const scssLoader = {
     test: /\.(scss|sass)$/,
     exclude: /\.module\.(scss|sass)$/,
     use: [
-    {
-        loader: MiniCssExtractPlugin.loader,
-        options: {
-            hmr: true,
-            reloadAll: true
+        {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+                hmr: true,
+                reloadAll: true
+            },
         },
-    }, 
-    {
-        loader: require.resolve('css-loader'),
-        options: {
-            importLoaders: 2,
-            sourceMap: shouldUseSourceMap,
-        }
-    }, {
-        // Options for PostCSS as we reference these options twice
-        // Adds vendor prefixing based on your specified browser support in
-        // package.json
-        loader: require.resolve('postcss-loader'),
-        options: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
-            ident: 'postcss',
-            plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                require('postcss-preset-env')({
-                    autoprefixer: {
-                        flexbox: 'no-2009',
-                    },
-                    stage: 3,
-                }),
-            ],
-            sourceMap: shouldUseSourceMap,
-        },
-    }, {
-        loader: require.resolve('sass-loader'),
-        options: {
-            sourceMap: shouldUseSourceMap
-        }
-    }],
+        {
+            loader: require.resolve('css-loader'),
+            options: {
+                importLoaders: 2,
+                sourceMap: shouldUseSourceMap,
+            }
+        }, {
+            // Options for PostCSS as we reference these options twice
+            // Adds vendor prefixing based on your specified browser support in
+            // package.json
+            loader: require.resolve('postcss-loader'),
+            options: {
+                // Necessary for external CSS imports to work
+                // https://github.com/facebook/create-react-app/issues/2677
+                ident: 'postcss',
+                plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    require('postcss-preset-env')({
+                        autoprefixer: {
+                            flexbox: 'no-2009',
+                        },
+                        stage: 3,
+                    }),
+                ],
+                sourceMap: shouldUseSourceMap,
+            },
+        }, {
+            loader: require.resolve('sass-loader'),
+            options: {
+                sourceMap: shouldUseSourceMap
+            }
+        }],
     // Don't consider CSS imports dead code even if the
     // containing package claims to have no side effects.
     // Remove this when webpack adds a warning or an error for this.
@@ -103,7 +103,7 @@ const jsLoader = {
                 "@babel/preset-env"
             ]
         ],
-        "plugins": ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"]
+        "plugins": ["@babel/plugin-proposal-class-properties"]//"react-hot-loader/babel"
     }
 }
 
@@ -178,11 +178,11 @@ const WebConfig = {
             __Client__: true
         }),
         new MiniCssExtractPlugin({
-            disable: NODE_ENV !== 'production',
+            // disable: NODE_ENV !== 'production',
             // filename: 'css/[name].css',//May contain [contenthash:8]  `[name]`, `[id]`, `hash` and `[chunkhash]`
             // chunkFilename: 'css/[name].css',
             filename: 'css/[name].[hash].css',//hash
-            chunkFilename: '[name].[hash].hot-update.css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
+            chunkFilename: 'css/[name].[hash].css',//非入口依赖文件, 使用 chunkhash 而非 hash:8
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
         new ManifestPlugin({

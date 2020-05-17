@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, matchPath } from "react-router-dom";
 import routes from './routes';
 import PropTypes from 'prop-types';
-import { hot } from 'react-hot-loader';
+// import { hot } from 'react-hot-loader';
 
 function Loading() {
     return <div>loading</div>;
@@ -68,8 +68,8 @@ class App extends React.Component {
     }
 }
 
-const HotApp = hot(module)(App)
-
+// const HotApp = hot(module)(App)
+const HotApp = App;
 //将异步组件变为同步组件
 const [machRouter = null] = routes.filter(item => {
     const { isExact = false } = matchPath(location.pathname, item.path) || {};
