@@ -19,7 +19,7 @@ async function renderPage({ html, pageData, assetName }) {
     let moduleCssArr = [`${assetName}.css`].map(item => {
         return assetManifest[item];// 获取css
     }).filter(Boolean);
-    console.log('--------------------moduleCssArr---------------------------', moduleCssArr);
+
     let pageHtml = '';
     const data = {
         tdk: '测试网站',
