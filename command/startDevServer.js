@@ -1,4 +1,5 @@
-const envVal = process.env.BUILD_ENV === 'production' ? 'production' : 'development';
+//开发模式的production还是 production
+const envVal = process.env.BUILD_ENV === 'production' ? 'development' : 'development';
 process.env.BABEL_ENV = envVal
 process.env.NODE_ENV = envVal;
 
