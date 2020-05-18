@@ -209,7 +209,7 @@ const WebConfig = {
 //开发环境
 if (!isProduction) {
     WebConfig.plugins.unshift(new ManifestPlugin({
-        fileName: '../asset-manifest.json'
+        fileName: `../${ clientConfig.assetManifestName }.json`
     }));
     // 当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
     WebConfig.plugins.unshift(new webpack.HotModuleReplacementPlugin());

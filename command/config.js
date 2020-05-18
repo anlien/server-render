@@ -6,6 +6,7 @@ const { resolvePath } = require('./libs/files');
 // const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const serverConfigDir = {
     srcDir: 'src',
+    rootDir: 'dist',
     buildDir: 'dist/server',
     watchNodeDir: '../src/server'
 }
@@ -15,7 +16,8 @@ const clientConfig = {
     buildDir: resolvePath('dist/www', __dirname),
     entryJs: {
         index: resolvePath('src/client/index.js', __dirname)
-    }
+    },
+    assetManifestName: 'asset-manifest'
 }
 
 module.exports = {

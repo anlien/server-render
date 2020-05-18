@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/anlien/server-render.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "anlien",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/anlien/server-render/issues"
   },
