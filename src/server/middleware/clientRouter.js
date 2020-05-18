@@ -6,19 +6,18 @@ import sendHTML from './sendHTML';
 
 async function clientRouter({ req, res }, next) {
     const branch = matchRoutes(routes, req.url);
-    if (branch.length < 1) {//没有匹配到路由时的处理
-        await next();
-    }
-    const { route, match } = branch[0];
-    if (match.isExact) {
-        const componentObj = await route.getComponent();
-        const App = componentObj.default;
-        try {
-            let html = renderToString(<App />);
-            await sendHTML({ req, res }, { html, pageData: [], assetName: route.name });
-        } catch (e) {
-            //报错做其他处理
-            console.log('-------------------render err-----------', e);
+    if (branch.length > 0) {//没有匹配到路由时的处理
+        const { route, match } = branch[0];
+        if (match.isExact) {
+            const componentObj = await route.getComponent();
+            const App = componentObj.default;
+            try {
+                let html = renderToString(<App />);
+                await sendHTML({ req, res }, { html, pageData: [], assetName: route.name });
+            } catch (e) {
+                //报错做其他处理
+                console.log('-------------------render err-----------', e);
+            }
         }
     }
     await next();

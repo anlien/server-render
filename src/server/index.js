@@ -18,7 +18,8 @@ app.use(async (ctx, next) => {
     next();
 });
 app.use(async ctx => {
-    ctx.body = 'App';//编译在组件中完成
+    ctx.res.statusCode = 404
+    ctx.body = '404 - Not Found';//编译在组件中完成
 });
 
 app.listen(9000);

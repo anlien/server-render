@@ -52,6 +52,7 @@ RouteComponent.childContextTypes = {
     history: PropTypes.object,
     location: PropTypes.object
 };
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -81,7 +82,6 @@ if (!__ISPROD__) {
 //将异步组件变为同步组件
 const [machRouter = null] = routes.filter(item => {
     const { isExact = false } = matchPath(location.pathname, item.path) || {};
-    console.log('item', item);
     return isExact ? item : false;
 });
 
