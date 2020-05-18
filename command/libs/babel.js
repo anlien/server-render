@@ -5,6 +5,7 @@ const { serverConfigDir } = require('../config');
 const babelPluginIgnoreMedia = require('./babel-plugin-ignore-media').default;
 const babelPluginReplaceImg = require('./babel-plugin-replace-img').default;
 const fs = require("fs");
+var Terser = require("terser");//压缩代码 https://www.npmjs.com/package/terser。 与webpack使用的是一个组件。
 //服务端使用的babel编译
 //webpack 中的另外配置
 
@@ -23,10 +24,19 @@ const babelNodeConfig = {
     "plugins": ["@babel/plugin-proposal-class-properties", babelPluginIgnoreMedia, babelPluginReplaceImg]
 };
 
+//压缩js代码
+function terserCode(code) {
+    var result = Terser.minify(code);
+    if (!result.error) {
+        return result.code;
+    }
+    return code;
+}
 
 // 编译js代码
 function compiling(filesList = []) {
     const filterJsFileArr = filterFiles(filesList, 'js');
+    const isProd = process.env.BABEL_ENV === 'production';
     let promises = filterJsFileArr.map(filePath => {
         return new Promise((resolve, reject) => {
             //https://misc.flogisoft.com/bash/tip_colors_and_formatting
@@ -35,8 +45,8 @@ function compiling(filesList = []) {
                 if (err) {
                     console.error(err);
                     reject(false)
-                } else if (result) {//有值再写                    
-                    let code = result.code;
+                } else if (result) {//有值再写
+                    const code = isProd ? terserCode(result.code) : result.code;
                     writeFile(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir), code, () => {
                         resolve(true)
                     });
