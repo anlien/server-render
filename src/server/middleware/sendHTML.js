@@ -1,6 +1,9 @@
 import ejs from 'ejs';
 import path from 'path';
-const assetManifest = require("../../../asset-manifest.json");
+const configData = require('../config');
+const assetManifest = require(`../../../${configData.manifest}.json`);
+const templatePath = path.join(__dirname, '../template/index.ejs');
+
 export default async function sendHTML({ req, res }, renderData) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     const pageHtml = await renderPage(renderData);
@@ -9,7 +12,7 @@ export default async function sendHTML({ req, res }, renderData) {
     res.end(req.method === 'HEAD' ? null : pageHtml)
 }
 async function renderPage({ html, pageData, assetName }) {
-    let baseVendorArr = ["index.js", "vendor.js"].map(item => {
+    let baseVendorArr = configData['baseVendor'].map(item => {
         return assetManifest[item];//基础数据
     });
 
@@ -22,14 +25,14 @@ async function renderPage({ html, pageData, assetName }) {
 
     let pageHtml = '';
     const data = {
-        tdk: '测试网站',
+        tdk: configData.tdk,
         content: html,
         baseVendorArr,
         moduleJsArr,
         moduleCssArr,
         pageData: JSON.stringify(pageData)
     }
-    ejs.renderFile(path.join(__dirname, '../template/index.ejs'), data, (err, str) => {
+    ejs.renderFile(templatePath, data, (err, str) => {
         if (err) {
             console.log('报错', err)
         }

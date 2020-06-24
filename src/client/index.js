@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, matchPath } from "react-router-dom";
 import routes from './routes';
 import PropTypes from 'prop-types';
-
+import { withRouter } from "react-router";
 //加载组件的场景动画
 function Loading() {
     return <div>loading</div>;
@@ -21,7 +21,8 @@ class RouteComponent extends React.Component {
             isloading
         }
     }
-    //子组件的上下文
+    // 子组件的上下文
+    // 上下文只在浏览器端使用
     getChildContext() {
         const { history, location } = this.props;
         return {
@@ -40,10 +41,11 @@ class RouteComponent extends React.Component {
             })
         }
     }
-
+    //配置router
     render() {
         const { MachComponent } = this;
-        return <MachComponent />
+        let WithRouterApp = withRouter(MachComponent);
+        return <WithRouterApp data={{}}/>
     }
 }
 
@@ -58,15 +60,22 @@ class App extends React.Component {
         this.state = {}
     }
     render() {
-        return <Switch>{
-            routes.map((route, index) => {
-                const { path, getComponent, MachComponent } = route;
-                return <Route path={path} key={`route-${index}`}
-                    exact
-                    strict
-                    render={(routeProps) => <RouteComponent {...routeProps} getComponent={getComponent} MachComponent={MachComponent} />}></Route>
-            })
-        }</Switch>
+        return <Switch>
+            {
+                routes.map((route, index) => {
+                    const { path, getComponent, MachComponent } = route;
+                    return <Route path={path}
+                        key={`route-${index}`}
+                        exact
+                        strict
+                        render={(routeProps) => <RouteComponent {...routeProps}
+                            getComponent={getComponent}
+                            MachComponent={MachComponent} />}>
+
+                    </Route>
+                })
+            }
+        </Switch>
     }
 }
 let HotApp = App;

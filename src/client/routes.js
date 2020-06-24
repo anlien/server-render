@@ -17,3 +17,12 @@ export default routes.map(item => {
     item.strict = true;//严格匹配 /detail/ 与 /detail是两个路由
     return item
 });
+
+// const routes = [
+//     {
+//         path: "/shoelaces",
+//         sidebar: () => <div>shoelaces!</div>,
+//         main: () => <h2>Shoelaces</h2>
+//     }
+// ];
+// https://reacttraining.com/react-router/web/example/sidebar
