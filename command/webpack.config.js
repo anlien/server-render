@@ -11,7 +11,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
 const shouldUseSourceMap = !isProduction;
-const { port } = require('./webpack.deserver.config');
+const { port } = require('./webpack.dev.server.config');
 
 const fileLoader = {
     loader: require.resolve('file-loader'),

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { writeFile, resolvePath } = require('./files');
 const path = require('path');
+const { clientConfig, serverConfigDir } = require('../config');
 
 function make_asset_manifest({ stats, callback, publicPath }) {
     const { assetsInfo } = stats.compilation;
@@ -14,8 +15,9 @@ function make_asset_manifest({ stats, callback, publicPath }) {
         })
     }
 
-    //生成 asset-manifest.json 中的数据
+    // 生成 asset-manifest.json 中的数据
     // 格式位webpack.config中filename: 'js/[name].[hash].js'
+    // 多媒体的目录：media
     let manifest = {};
     assetsInfoToArr.forEach(item => {
         let parseFile = path.parse(item);
@@ -28,7 +30,7 @@ function make_asset_manifest({ stats, callback, publicPath }) {
             manifest[`media/${filename}${ext}`] = publicPath + item;
         }
     });
-    writeFile(resolvePath('../dist/asset-manifest.json'), manifest, (err) => {
+    writeFile(resolvePath(`../${serverConfigDir.rootDir}/${clientConfig.assetManifestName}.json`), manifest, (err) => {
         if (err) {
             console.error(err);
             return;

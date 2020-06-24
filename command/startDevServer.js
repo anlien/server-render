@@ -10,7 +10,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./webpack.config');
 const compiler = webpack(webpackConfig);
-const devServerConfig = require('./webpack.deserver.config');
+const devServerConfig = require('./webpack.dev.server.config');
 const { runBuildServer } = require('./buildServer');
 const { compiling } = require('./libs/babel');
 const { resolvePath, mkdirsSync } = require('./libs/files');
@@ -114,7 +114,7 @@ watcher.on('change', filePath => {
 }).on('unlink', filePath => {
     console.log(`File ${filePath} has been removed`);
 }).on('addDir', filePath => {
-    console.log('创建目录：', path.normalize(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir)));
+    // console.log('创建目录：', path.normalize(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir)));
     mkdirsSync(path.normalize(filePath.replace(serverConfigDir.srcDir, serverConfigDir.buildDir)));//创建目录
 });
 

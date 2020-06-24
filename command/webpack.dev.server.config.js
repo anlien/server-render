@@ -25,7 +25,7 @@ module.exports = {
         return /asset-manifest\.json$/.test(filePath);
     },
     port: 3001,
-    sockPort: 3001,
+    sockPort: 3001,//
     openPage: 'http://localhost:9000/',
     serverSideRender: true, //生成asset-manifest.json。没有效果
 }
