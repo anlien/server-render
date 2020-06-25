@@ -101,7 +101,7 @@ const jsLoader = {
                     "targets": {
                         "ie": 9
                     },
-                    "useBuiltIns": "usage"
+                    // "useBuiltIns": "usage"
                 }
             ]
         ],
