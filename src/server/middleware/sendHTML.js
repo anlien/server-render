@@ -11,7 +11,7 @@ export default async function sendHTML({ req, res }, renderData) {
     res.statusCode = 200;
     res.end(req.method === 'HEAD' ? null : pageHtml)
 }
-async function renderPage({ html, pageData, assetName }) {
+async function renderPage({ html, totalData, assetName }) {
     let baseVendorArr = configData['baseVendor'].map(item => {
         return assetManifest[item];//基础数据
     });
@@ -30,7 +30,7 @@ async function renderPage({ html, pageData, assetName }) {
         baseVendorArr,
         moduleJsArr,
         moduleCssArr,
-        pageData: JSON.stringify(pageData)
+        totalData: JSON.stringify(totalData)
     }
     ejs.renderFile(templatePath, data, (err, str) => {
         if (err) {

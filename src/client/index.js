@@ -17,9 +17,10 @@ class RouteComponent extends React.Component {
         const { MachComponent = null } = props;
         let isloading = !MachComponent;//
         this.MachComponent = MachComponent || Loading;
+        this.totalData = props.totalData;
         this.state = {
             isloading
-        }
+        };
     }
     // 子组件的上下文
     // 上下文只在浏览器端使用
@@ -43,9 +44,10 @@ class RouteComponent extends React.Component {
     }
     //配置router
     render() {
-        const { MachComponent } = this;
+        const { MachComponent, totalData } = this;
+        const { pageData, commonData } = totalData;
         let WithRouterApp = withRouter(MachComponent);
-        return <WithRouterApp data={{}}/>
+        return <WithRouterApp pageData={pageData} commonData={commonData} />
     }
 }
 
@@ -63,13 +65,14 @@ class App extends React.Component {
         return <Switch>
             {
                 routes.map((route, index) => {
-                    const { path, getComponent, MachComponent } = route;
+                    const { path, getComponent, MachComponent, totalData } = route;
                     return <Route path={path}
                         key={`route-${index}`}
                         exact
                         strict
                         render={(routeProps) => <RouteComponent {...routeProps}
                             getComponent={getComponent}
+                            totalData={totalData}
                             MachComponent={MachComponent} />}>
 
                     </Route>
@@ -95,10 +98,14 @@ const [machRouter = null] = routes.filter(item => {
 
 
 if (machRouter) {
+    const pageData = document.getElementById('pageData');
     machRouter.getComponent().then(data => {
         machRouter.MachComponent = data.default; //获得的组件，绑在router上
+        machRouter.totalData = JSON.parse(pageData.innerText);
     }).then(() => {
         //延迟渲染，避免前后端渲染不一致
         ReactDOM.hydrate(<BrowserRouter><HotApp></HotApp></BrowserRouter>, document.getElementById("root"))
     })
+} else {
+
 }

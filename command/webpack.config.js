@@ -97,11 +97,12 @@ const jsLoader = {
         "presets": [
             "@babel/preset-react",
             [
-                "@babel/preset-env", {
-                    "targets": {
-                        "ie": 9
-                    },
-                    // "useBuiltIns": "usage"
+                "@babel/env",
+                {
+                    "targets": { "ie": 9 },
+                    "ignoreBrowserslistConfig": true,
+                    "useBuiltIns": false,
+                    "modules": false
                 }
             ]
         ],

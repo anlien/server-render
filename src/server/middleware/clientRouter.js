@@ -19,14 +19,20 @@ async function clientRouter({ req, res }, next) {
             const App = componentObj.default;//页面组件
             let data = {};
             if (App.fetchComponentData) {
+                //页面需要的数据
                 data = await App.fetchComponentData();//用route 获得数据
             }
-
             let context = {};
             let WithRouterApp = withRouter(App);
+            let totalData = {
+                pageData: data,
+                commonData: {}
+            }
             try {
-                let html = renderToString(<StaticRouter location={req.url} context={context}><WithRouterApp data={data}></WithRouterApp></StaticRouter>);
-                await sendHTML({ req, res }, { html, pageData: [], assetName: route.name });
+                let html = renderToString(<StaticRouter location={req.url} context={context}>
+                    <WithRouterApp pageData={totalData.pageData} commonData={totalData.commonData}></WithRouterApp>
+                </StaticRouter>);
+                await sendHTML({ req, res }, { html, totalData, assetName: route.name });
             } catch (e) {
                 //报错做其他处理
                 console.log('-------------------render err-----------', e);
