@@ -15,7 +15,8 @@ const clientConfig = {
     srcDir: resolvePath('src/client', __dirname),
     buildDir: resolvePath('dist/www', __dirname),
     entryJs: {
-        index: resolvePath('src/client/index.js', __dirname)
+        //根据 浏览器不同加载 不同资源，可以从此处入手
+        index: [resolvePath('command/polyfills.js', __dirname), resolvePath('src/client/index.js', __dirname)]
     },
     assetManifestName: 'asset-manifest'
 }
