@@ -18,9 +18,14 @@ async function clientRouter({ req, res }, next) {
             const componentObj = await route.getComponent();//
             const App = componentObj.default;//页面组件
             let data = {};
-            if (App.fetchComponentData) {
-                //页面需要的数据
-                data = await App.fetchComponentData();//用route 获得数据
+            try {
+                if (App.fetchComponentData) {
+                    //页面需要的数据
+                    data = await App.fetchComponentData();//用route 获得数据
+                }
+            } catch (e) {
+                data = {};
+                console.error('服务端请求接口 出了错误');//记录日志
             }
             let context = {};
             let WithRouterApp = withRouter(App);
@@ -28,15 +33,16 @@ async function clientRouter({ req, res }, next) {
                 pageData: data,
                 commonData: {}
             }
+            let html = '';
             try {
-                let html = renderToString(<StaticRouter location={req.url} context={context}>
+                html = renderToString(<StaticRouter location={req.url} context={context}>
                     <WithRouterApp pageData={totalData.pageData} commonData={totalData.commonData}></WithRouterApp>
                 </StaticRouter>);
-                await sendHTML({ req, res }, { html, totalData, assetName: route.name });
             } catch (e) {
-                //报错做其他处理
-                console.log('-------------------render err-----------', e);
+                html = ''
+                console.error('渲染组件出了错误');//记录日志
             }
+            await sendHTML({ req, res }, { html, totalData, assetName: route.name });
         }
     }
     await next();

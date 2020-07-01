@@ -2,15 +2,17 @@
 
 require("whatwg-fetch");
 
-require("core-js/es6/map");
+require("core-js/es/map");
 
-require("core-js/es6/set");
+require("core-js/es/set");
 
 if (typeof Promise === 'undefined') {
   // Rejection tracking prevents a common issue where React gets into an
   // inconsistent state due to an error, but it gets swallowed by a Promise,
   // and the user has no idea what causes React's erratic future behavior.
   require('promise/lib/rejection-tracking').enable(); //promise/lib/es6-extensions.js低版本UC上有问题，替换成pinkie-promise
+
+
   window.Promise = require('pinkie-promise');
 } //低版本浏览器不支持fetch添加一个腻子包
 //android5 IOS 8.4 有Object.assign兼容性问题

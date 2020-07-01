@@ -1,21 +1,57 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './index.scss';
-import money from '../assets/money.png';
-class Home extends React.Component {
-    componentDidMount() {
-        // const { history } = this.context;
-        // setTimeout(() => {
-        //     history.push("/detail?ceshi=12&p=5");
-        // }, 3000)
-    }
-    render() {
-        return <div className='wrap'><img src={money} />首页 测试</div>
-    }
+
+import { ThemeContext, themes } from './theme-context';
+// import ThemedButton from './themed-button';
+import ThemedButton from './themed-button';
+
+// An intermediate component that uses the ThemedButton
+function Toolbar(props) {
+  
+  return (
+    <ThemedButton onClick={props.changeTheme}>
+      Change Theme
+    </ThemedButton>
+  );
 }
 
-// 获得接口数据
-// Home.fetchComponentData = async (req) => {
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: themes.light,
+    };
 
-// }
-export default Home;
+    this.toggleTheme = () => {
+      this.setState(state => ({
+        theme:
+          state.theme === themes.dark
+            ? themes.light
+            : themes.dark,
+      }), () => {
+        throw (new Error('错误包'));
+      });
+    };
+  }
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    // logErrorToMyService(error, errorInfo);
+    console.log('this.props.children error');
+    console.log(error, errorInfo);
+  }
+
+  render() {
+    // The ThemedButton button inside the ThemeProvider
+    // uses the theme from state while the one outside uses
+    // the default dark theme
+    return (
+      <div>
+        <ThemeContext.Provider value={this.state.theme}>
+          <Toolbar changeTheme={this.toggleTheme} />
+        </ThemeContext.Provider>
+        <section>
+          <ThemedButton>对比组</ThemedButton>
+        </section>
+      </div>
+    );
+  }
+}

@@ -10,7 +10,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
-const shouldUseSourceMap = !isProduction;
+const shouldUseSourceMap = true;
 const { port } = require('./webpack.dev.server.config');
 
 const fileLoader = {
@@ -106,7 +106,7 @@ const jsLoader = {
                 }
             ]
         ],
-        "plugins": ["@babel/plugin-proposal-class-properties"]//
+        "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-react-jsx-source"]//
     }
 }
 
@@ -119,7 +119,7 @@ const WebConfig = {
     mode: isProduction ? 'production' : 'development',
     target: 'web',
     cache: true,
-    devtool: isProduction ? 'none' : 'source-map',
+    devtool: isProduction ? 'hidden-source-map' : 'source-map',
     entry: clientConfig.entryJs,//在config中 设置入口
     output: {
         pathinfo: true,
@@ -132,7 +132,7 @@ const WebConfig = {
         minimizer: [
             new TerserPlugin({
                 cache: !isProduction,
-                sourceMap: !isProduction,
+                sourceMap: true,
                 extractComments: true,
                 terserOptions: {
                     ecma: "2015",
@@ -208,6 +208,13 @@ const WebConfig = {
     ]
 }
 
+if (!isProduction) {
+    WebConfig.resolve = {
+        alias: {
+            'react-dom': '@hot-loader/react-dom',
+        }
+    };
+}
 //开发环境
 if (!isProduction) {
     WebConfig.plugins.unshift(new ManifestPlugin({

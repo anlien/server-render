@@ -5,10 +5,8 @@ import { BrowserRouter, Route, Switch, matchPath } from "react-router-dom";
 import routes from './routes';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
-//加载组件的场景动画
-function Loading() {
-    return <div>loading</div>;
-}
+import Loading from './components/Loading';
+import ErrorBoundary from './components/ErrorBoundary';
 
 //route 下的子组件。route 5较为灵活，可以灵活控制
 class RouteComponent extends React.Component {
@@ -22,15 +20,7 @@ class RouteComponent extends React.Component {
             isloading
         };
     }
-    // 子组件的上下文
-    // 上下文只在浏览器端使用
-    getChildContext() {
-        const { history, location } = this.props;
-        return {
-            history,
-            location
-        }
-    }
+
     componentDidMount() {
         const { getComponent } = this.props;
         if (this.state.isloading) {
@@ -47,14 +37,9 @@ class RouteComponent extends React.Component {
         const { MachComponent, totalData } = this;
         const { pageData, commonData } = totalData;
         let WithRouterApp = withRouter(MachComponent);
-        return <WithRouterApp pageData={pageData} commonData={commonData} />
+        return <ErrorBoundary><WithRouterApp pageData={pageData} commonData={commonData} /></ErrorBoundary>
     }
 }
-
-RouteComponent.childContextTypes = {
-    history: PropTypes.object,
-    location: PropTypes.object
-};
 
 class App extends React.Component {
     constructor(props) {
@@ -96,7 +81,6 @@ const [machRouter = null] = routes.filter(item => {
     return isExact ? item : false;
 });
 
-
 if (machRouter) {
     const pageData = document.getElementById('pageData');
     machRouter.getComponent().then(data => {
@@ -109,3 +93,4 @@ if (machRouter) {
 } else {
 
 }
+export default App;
