@@ -7,30 +7,60 @@
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta name="keywords" content="行迹，轨迹，历史，经历，记忆，总结，建议，回顾，坚持，持续，帮助">
     <meta name="description" content="不同环境不同成长，但从时间看成长相似，时间记录经历，经历获得积累，积累转为财富，财富得以继承">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <meta name="format-detection" content="telephone=no">
     <title>优优行迹</title>
     <script>!function (e, t) { function n() { t.body ? t.body.style.fontSize = 12 * o + "px" : t.addEventListener("DOMContentLoaded", n) } function i(t) { var t = t ? t : 750, n = e.innerWidth / t * 100; return e.innerWidth > t ? (n = 50, d.style.maxWidth = t + "px", d.style.margin = "0 auto", void (d.style.fontSize = "100px")) : void (d.style.fontSize = n + "px") } var d = t.documentElement, o = e.devicePixelRatio || 1; if (n(), i(750), e.addEventListener("resize", function () { i(750) }), e.addEventListener("pageshow", function (e) { e.persisted && i(750) }), o >= 2) { var a = t.createElement("body"), r = t.createElement("div"); r.style.border = ".5px solid transparent", a.appendChild(r), d.appendChild(a), 1 === r.offsetHeight && d.classList.add("hairlines"), d.removeChild(a) } }(window, document);</script>
-    <style type="text/css"> * {margin: 0;padding: 0;box-sizing: border-box;outline: 0;-webkit-tap-highlight-color: transparent}html {-webkit-text-size-adjust: none;-webkit-font-smoothing: antialiased}body,html {height: 100%;background-color: #f4f4f4}a {text-decoration: none}</style>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: 0;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        html {
+            -webkit-text-size-adjust: none;
+            -webkit-font-smoothing: antialiased
+        }
+
+        body,
+        html {
+            height: 100%;
+            /* background-color: #f4f4f4 */
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        li {
+            list-style: none;
+        }
+    </style>
     <% if(moduleCssArr.length){ %>
-        <% moduleCssArr.forEach(function(item){ %>
-            <link rel="stylesheet" type="text/css" href="<%= item %>">
-        <% }) %>
+    <% moduleCssArr.forEach(function(item){ %>
+    <link rel="stylesheet" type="text/css" href="<%= item %>">
+    <% }) %>
     <% }%>
 </head>
+
 <body>
     <div id="root"><%- content %></div>
     <div id='pageData' hidden=true><%- totalData %></div>
     <div id='shade' style="display:none;"></div>
     <% if(baseVendorArr.length){ %>
-        <% baseVendorArr.forEach(function(item){ %>
-            <script src="<%= item %>"></script>
-        <% }) %>
+    <% baseVendorArr.forEach(function(item){ %>
+    <script src="<%= item %>"></script>
+    <% }) %>
     <% }%>
     <% if(moduleJsArr.length){ %>
-        <% moduleJsArr.forEach(function(item){ %>
-            <script src="<%= item %>"></script>
-        <% }) %>
+    <% moduleJsArr.forEach(function(item){ %>
+    <script src="<%= item %>"></script>
+    <% }) %>
     <% }%>
 </body>
+
 </html>

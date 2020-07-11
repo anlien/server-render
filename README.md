@@ -1,41 +1,44 @@
-# 概述
-    支持在node端渲染react页面。
+# 本地数据库
 
-# 使用方式
-    下载项目并安装依赖后。
+- [lowdb](https://github.com/typicode/lowdb)
 
-## 启动
-* 测试环境：运行 **npm run start** 启动 development 的开发环境。
-* 预上线环境：运行 **npm run start:prod** 启动 production 的开发环境。 
+# UI 页面
 
-## 添加页面
-1. 在 src -> client -> pages 中添加页面的目录；
-2. 在 src -> client -> routes.js 中添加对应的路由；
+- [ant-design](https://github.com/ant-design/ant-design)
+- [material-ui](https://github.com/mui-org/material-ui)
 
-只有将页面添加在路由中，webpack才会进行监听。路由是整个项目的入口。
+# 错误处理
 
-## 编译
-* 测试环境：运行 **npm run build** 启动 development 的编译环境。
-* 测试环境：运行 **npm run build:prod** 启动 production 的编译环境。
+- [搭建前端监控系统](https://www.jianshu.com/p/f09093fd8dca)
+- [babel-plugin-transform-react-jsx-source](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx-source/)
+  - 捕获组件的源码位置
 
-## 线上
+# typescript
 
-    启动项目的命令是：node dist/server/server/index
+可以再尝试
 
-# 技术点
-* src-> client -> routes.js 是webpack的入口
-* dist -> asset-manifest.json 是 webpack-dev-server 与 node server 的连接点
+- babel 编译后的组件后缀名为 ts，需要重写
+- babel 不支持图片的编译
+- [前端的路子](https://zhuanlan.zhihu.com/p/84956841)
+- [单步调试 js](https://developers.google.com/web/tools/chrome-devtools/javascript/step-code)
 
-## 技术栈
-* react：16.13.1
-* react-dom：16.13.1
-* react-router：5.1.2
-* webpack: 4.43.0
-* @babel/cli: 7.8.4
+# eslint
 
-# 注意事项
-1. css命名时最好使用命名空间。
-2. 图片不能重名。名字与目录无关。
+- [Expected linebreaks to be 'LF' but found 'CRLF'.](https://www.cnblogs.com/guangzan/p/11866261.html)
 
-# 支持
-* 联系方式：543720160@qq.com
+循序渐进 // "husky": { // "hooks": { // "pre-commit": "pretty-quick --staged" // } // },
+
+// 参考：http://react-china.org/t/react-eslint/29150
+
+- [vscode_tsx_eslint](https://www.haorooms.com/post/vscode_tsx_eslint)
+
+- [jd 移动端 vue 组件](http://nutui.jd.com/)
+- [weui](https://weui.io/)
+- [Ant Design Mobile](https://github.com/ant-design/ant-design-mobile)
+- [ionic](https://github.com/ionic-team/ionic)
+- [g6.antv](https://g6.antv.vision/zh/examples/gallery)
+- [landing.ant.design](https://landing.ant.design/index-cn)
+- [motion.ant.design](https://motion.ant.design/index-cn)
+- [设计文档](https://ant.design/docs/spec/research-form-cn)
+
+文章 \*[ 移动框架 ](https://www.jianshu.com/p/1e05c8d68407)
