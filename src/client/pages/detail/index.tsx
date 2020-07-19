@@ -1,5 +1,6 @@
 import React from 'react';
 import tupImg from '../assets/tup.png';
+import { withRouter } from 'react-router';
 // import PropTypes from 'prop-types';
 // import './index.scss';
 // label?: React.ReactNode;
@@ -10,9 +11,10 @@ export interface PageDataType {
 }
 
 export interface PagePropsType {
-  pageData: PageDataType;
+  pageData?: PageDataType;
+  history?: any;
 }
-class Detail extends React.Component<{ pageData: Object }, { pageData: Object }> {
+class Detail extends React.Component<PagePropsType, any> {
   // static propTypes = {
   //     match: PropTypes.object.isRequired,
   //     location: PropTypes.object.isRequired,
@@ -40,12 +42,12 @@ class Detail extends React.Component<{ pageData: Object }, { pageData: Object }>
     Detail.fetchComponentData();
   }
   onClickHandle = () => {
-    const { history } = this.context;
+    const { history } = this.props;
     history.push('/');
     console.log('点击事件点击事件');
   };
   render() {
-    const pageData: PageDataType = this.state.pageData;
+    const pageData: PageDataType = this.state.pageData || {};
     return (
       <div className="wrap">
         <img src={tupImg} />
@@ -55,4 +57,4 @@ class Detail extends React.Component<{ pageData: Object }, { pageData: Object }>
   }
 }
 
-export default Detail;
+export default withRouter(Detail);

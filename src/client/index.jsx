@@ -1,43 +1,11 @@
 /**client的入口 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, matchPath } from 'react-router-dom';
-import RouteComponent from './RouteComponent';
+import { BrowserRouter as Router, Route, Switch, matchPath } from 'react-router-dom';
+import RouteComponent from './components/RouteComponent/index';
 import routes from './routes';
-//route 下的子组件。route 5较为灵活，可以灵活控制
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return (
-      <Switch>
-        {routes.map((route, index) => {
-          const { path, getComponent, MachComponent, totalData } = route;
-          return (
-            <Route
-              path={path}
-              key={`route-${index}`}
-              exact
-              strict
-              render={routeProps => (
-                <RouteComponent
-                  {...routeProps}
-                  getComponent={getComponent}
-                  totalData={totalData}
-                  MachComponent={MachComponent}
-                />
-              )}
-            ></Route>
-          );
-        })}
-      </Switch>
-    );
-  }
-}
-
+import App from './App';
+import Result from './components/Result/index';
 //将异步组件变为同步组件
 //与路由进行交互
 const [machRouter = null] = routes.filter(item => {
@@ -45,24 +13,60 @@ const [machRouter = null] = routes.filter(item => {
   return isExact ? item : false;
 });
 
-if (machRouter) {
-  const pageData = document.getElementById('pageData');
-  machRouter
-    .getComponent()
-    .then(data => {
-      machRouter.MachComponent = data.default; //获得的组件，绑在router上
-      machRouter.totalData = JSON.parse(pageData.innerText);
-    })
-    .then(() => {
-      //延迟渲染，避免前后端渲染不一致
-      ReactDOM.hydrate(
-        <BrowserRouter>
-          <App></App>
-        </BrowserRouter>,
-        document.getElementById('root'),
-      );
-    });
-} else {
-  console.log('异常处理');
-}
-export default App;
+let rootDom = document.getElementById('root');
+let renderPromise = new Promise(resolve => {
+  if (machRouter) {
+    const pageData = document.getElementById('pageData');
+    machRouter
+      .getComponent()
+      .then(data => {
+        machRouter.MachComponent = data.default; //获得的组件，绑在router上
+        machRouter.totalData = JSON.parse(pageData.innerText);
+      })
+      .then(() => {
+        resolve();
+      });
+  } else {
+    resolve();
+  }
+});
+
+renderPromise.then(() => {
+  ReactDOM.hydrate(
+    <Router>
+      <App>
+        <Switch>
+          {/*与服务端有相似，没必要抽出*/}
+          {routes.map((route, index) => {
+            const { path, getComponent, MachComponent, totalData } = route;
+            return (
+              <Route
+                path={path}
+                key={`route-${index}`}
+                exact
+                strict
+                render={routeProps => (
+                  <RouteComponent
+                    {...routeProps}
+                    getComponent={getComponent}
+                    totalData={totalData}
+                    MachComponent={MachComponent}
+                  />
+                )}
+              ></Route>
+            );
+          })}
+          <Route>
+            {/*此处仅 客户端用到，服务端不需要*/}
+            <Result
+              status="404"
+              title="404"
+              subTitle="Sorry, the page you visited does not exist"
+            ></Result>
+          </Route>
+        </Switch>
+      </App>
+    </Router>,
+    rootDom,
+  );
+});

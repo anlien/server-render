@@ -1,20 +1,23 @@
 import React from 'react';
-import Skeleton from '../../components_common/Skeleton/index';
-import Timeline from '../../components_common/Timeline/index';
-import Switch from '../../components_common/Switch/index';
-import TabBar from '../../TabBar';
+import Timeline from '../../components/Timeline/index';
+import NoticeBar from '../../components/NoticeBar/index';
+import Grid from '../../components/Grid/index';
 
 type Props = { age: number } & typeof defaultProps;
 const defaultProps = {};
+const data = Array.from(new Array(7)).map((_val, i) => ({
+  icon: 'https://gw.alipayobjects.com/zos/rmsportal/nywPmnTAvTmLusPxHPSu.png',
+  text: `name${i}`,
+}));
 
 const Greet = (props: Props) => {
   return (
     <div>
-      <TabBar></TabBar>
-      <Switch></Switch>
-      <Skeleton></Skeleton>
-      <Skeleton></Skeleton>
-      <Skeleton></Skeleton>
+      <NoticeBar marqueeProps={{ loop: false, style: { padding: '0 7.5px' } }} mode="closable">
+        Notice: The arrival time of incomes and transfers of Yu &#39;E Bao will be delayed during
+        National Day.
+      </NoticeBar>
+      <Grid data={data} columnNum={3} />
       <Timeline mode="alternate">
         <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
         <Timeline.Item color="green">Solve initial network problems 2015-09-01</Timeline.Item>
@@ -27,7 +30,6 @@ const Greet = (props: Props) => {
         <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
         <Timeline.Item color="green">Technical testing 2015-09-01</Timeline.Item>
       </Timeline>
-      ,
     </div>
   );
 };

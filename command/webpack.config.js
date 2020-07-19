@@ -88,54 +88,54 @@ const scssLoader = {
 };
 
 //babel/transform-runtime
-// const jsLoader = {
-//   test: /\.(tsx|ts|js)$/,
-//   exclude: /\/node_modules/,
-//   // include: clientConfig.srcDir,
-//   loader: require.resolve('babel-loader'),
-//   options: {
-//     cacheDirectory: true,
-//     babelrc: false,
-//     presets: [
-//       '@babel/preset-react',
-//       [
-//         '@babel/env',
-//         {
-//           targets: { ie: 9 },
-//           ignoreBrowserslistConfig: true,
-//           useBuiltIns: false,
-//           modules: false,
-//           // "browsers": [
-//           //     'last 2 versions',
-//           //     'Firefox ESR',
-//           //     '> 1%',
-//           //     'ie >= 9',
-//           //     'iOS >= 8',
-//           //     'Android >= 4',
-//           // ]
-//         },
-//       ],
-//       '@babel/preset-typescript',
-//     ],
-//     plugins: ['@babel/plugin-proposal-class-properties'], //
-//   },
-// };
-
-// //开发环境
-// if (!isProduction) {
-//   jsLoader.options.plugins.push('react-hot-loader/babel');
-// }
-
-const tsLoader = {
+const jsLoader = {
   test: /\.(t|j)sx?$/,
-  exclude: /node_modules/,
-  use: {
-    loader: 'ts-loader',
-    options: {
-      transpileOnly: true,
-    },
+  exclude: /\/node_modules/,
+  // include: clientConfig.srcDir,
+  loader: require.resolve('babel-loader'),
+  options: {
+    cacheDirectory: true,
+    babelrc: false,
+    presets: [
+      '@babel/preset-react',
+      [
+        '@babel/env',
+        {
+          targets: { ie: 9 },
+          ignoreBrowserslistConfig: true,
+          useBuiltIns: false,
+          modules: false,
+          // "browsers": [
+          //     'last 2 versions',
+          //     'Firefox ESR',
+          //     '> 1%',
+          //     'ie >= 9',
+          //     'iOS >= 8',
+          //     'Android >= 4',
+          // ]
+        },
+      ],
+      '@babel/preset-typescript',
+    ],
+    plugins: ['@babel/plugin-proposal-class-properties'], //
   },
 };
+
+// //开发环境
+if (!isProduction) {
+  jsLoader.options.plugins.push('react-hot-loader/babel');
+}
+
+// const tsLoader = {
+//   test: /\.(t|j)sx?$/,
+//   exclude: /node_modules/,
+//   use: {
+//     loader: 'ts-loader',
+//     options: {
+//       transpileOnly: true,
+//     },
+//   },
+// };
 const WebConfig = {
   mode: isProduction ? 'production' : 'development',
   target: 'web',
@@ -215,7 +215,7 @@ const WebConfig = {
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
       {
-        oneOf: [imgLoader, scssLoader, fileLoader, tsLoader],
+        oneOf: [imgLoader, scssLoader, fileLoader, jsLoader],
       },
     ],
   },
@@ -228,11 +228,11 @@ const WebConfig = {
   ],
 };
 
-// if (!isProduction) {
-//   WebConfig.resolve.alias = {
-//     'react-dom': '@hot-loader/react-dom',
-//   };
-// }
+if (!isProduction) {
+  WebConfig.resolve.alias = {
+    'react-dom': '@hot-loader/react-dom',
+  };
+}
 //开发环境
 if (!isProduction) {
   WebConfig.plugins.unshift(

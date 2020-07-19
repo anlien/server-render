@@ -1,0 +1,318 @@
+// https://www.sass.hk/css2sass/
+.ant-skeleton {
+  display: table;
+  width: 100%;
+  &.ant-skeleton-active {
+    .ant-skeleton-avatar {
+      background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(25%, #f2f2f2),
+        color-stop(37%, #e6e6e6),
+        color-stop(63%, #f2f2f2)
+      );
+      background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+      background-size: 400% 100%;
+      -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+      animation: ant-skeleton-loading 1.4s ease infinite;
+    }
+    .ant-skeleton-button {
+      background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(25%, #f2f2f2),
+        color-stop(37%, #e6e6e6),
+        color-stop(63%, #f2f2f2)
+      );
+      background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+      background-size: 400% 100%;
+      -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+      animation: ant-skeleton-loading 1.4s ease infinite;
+    }
+    .ant-skeleton-input {
+      background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(25%, #f2f2f2),
+        color-stop(37%, #e6e6e6),
+        color-stop(63%, #f2f2f2)
+      );
+      background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+      background-size: 400% 100%;
+      -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+      animation: ant-skeleton-loading 1.4s ease infinite;
+    }
+    .ant-skeleton-image {
+      background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(25%, #f2f2f2),
+        color-stop(37%, #e6e6e6),
+        color-stop(63%, #f2f2f2)
+      );
+      background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+      background-size: 400% 100%;
+      -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+      animation: ant-skeleton-loading 1.4s ease infinite;
+    }
+    .ant-skeleton-content {
+      .ant-skeleton-title,
+      .ant-skeleton-paragraph > li {
+        background: -webkit-gradient(
+          linear,
+          left top,
+          right top,
+          color-stop(25%, #f2f2f2),
+          color-stop(37%, #e6e6e6),
+          color-stop(63%, #f2f2f2)
+        );
+        background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+        background-size: 400% 100%;
+        -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+        animation: ant-skeleton-loading 1.4s ease infinite;
+      }
+    }
+  }
+}
+.ant-skeleton-header {
+  display: table-cell;
+  padding-right: 16/100 * 1rem;
+  vertical-align: top;
+  .ant-skeleton-avatar {
+    display: inline-block;
+    vertical-align: top;
+    background: #f2f2f2;
+    width: 32/100 * 1rem;
+    height: 32/100 * 1rem;
+    line-height: 32/100 * 1rem;
+    &.ant-skeleton-avatar-circle {
+      border-radius: 50%;
+    }
+  }
+  .ant-skeleton-avatar-lg {
+    width: 40/100 * 1rem;
+    height: 40/100 * 1rem;
+    line-height: 40/100 * 1rem;
+    &.ant-skeleton-avatar-circle {
+      border-radius: 50%;
+    }
+  }
+  .ant-skeleton-avatar-sm {
+    width: 24/100 * 1rem;
+    height: 24/100 * 1rem;
+    line-height: 24/100 * 1rem;
+    &.ant-skeleton-avatar-circle {
+      border-radius: 50%;
+    }
+  }
+}
+.ant-skeleton-content {
+  display: table-cell;
+  width: 100%;
+  vertical-align: top;
+  .ant-skeleton-title {
+    width: 100%;
+    height: 16/100 * 1rem;
+    margin-top: 16/100 * 1rem;
+    background: #f2f2f2;
+    & + .ant-skeleton-paragraph {
+      margin-top: 24/100 * 1rem;
+    }
+  }
+  .ant-skeleton-paragraph {
+    padding: 0;
+    & > li {
+      width: 100%;
+      height: 16/100 * 1rem;
+      list-style: none;
+      background: #f2f2f2;
+      &:last-child {
+        &:not(:first-child):not(:nth-child(2)) {
+          width: 61%;
+        }
+      }
+      & + li {
+        margin-top: 16/100 * 1rem;
+      }
+    }
+  }
+}
+.ant-skeleton-with-avatar {
+  .ant-skeleton-content {
+    .ant-skeleton-title {
+      margin-top: 12/100 * 1rem;
+      & + .ant-skeleton-paragraph {
+        margin-top: 28/100 * 1rem;
+      }
+    }
+  }
+}
+.ant-skeleton-round {
+  .ant-skeleton-content .ant-skeleton-title,
+  .ant-skeleton-content .ant-skeleton-paragraph > li {
+    border-radius: 100/100 * 1rem;
+  }
+}
+
+.ant-skeleton-element {
+  display: inline-block;
+  width: auto;
+  .ant-skeleton-button {
+    display: inline-block;
+    vertical-align: top;
+    background: #f2f2f2;
+    border-radius: 2/100 * 1rem;
+    width: 64/100 * 1rem;
+    height: 32/100 * 1rem;
+    line-height: 32/100 * 1rem;
+    &.ant-skeleton-button-circle {
+      width: 32/100 * 1rem;
+      border-radius: 50%;
+    }
+    &.ant-skeleton-button-round {
+      border-radius: 32/100 * 1rem;
+    }
+  }
+  .ant-skeleton-button-lg {
+    width: 80/100 * 1rem;
+    height: 40/100 * 1rem;
+    line-height: 40/100 * 1rem;
+    &.ant-skeleton-button-circle {
+      width: 40/100 * 1rem;
+      border-radius: 50%;
+    }
+    &.ant-skeleton-button-round {
+      border-radius: 40/100 * 1rem;
+    }
+  }
+  .ant-skeleton-button-sm {
+    width: 48/100 * 1rem;
+    height: 24/100 * 1rem;
+    line-height: 24/100 * 1rem;
+    &.ant-skeleton-button-circle {
+      width: 24/100 * 1rem;
+      border-radius: 50%;
+    }
+    &.ant-skeleton-button-round {
+      border-radius: 24/100 * 1rem;
+    }
+  }
+  .ant-skeleton-avatar {
+    display: inline-block;
+    vertical-align: top;
+    background: #f2f2f2;
+    width: 32/100 * 1rem;
+    height: 32/100 * 1rem;
+    line-height: 32/100 * 1rem;
+    &.ant-skeleton-avatar-circle {
+      border-radius: 50%;
+    }
+  }
+  .ant-skeleton-avatar-lg {
+    width: 40/100 * 1rem;
+    height: 40/100 * 1rem;
+    line-height: 40/100 * 1rem;
+    &.ant-skeleton-avatar-circle {
+      border-radius: 50%;
+    }
+  }
+  .ant-skeleton-avatar-sm {
+    width: 24/100 * 1rem;
+    height: 24/100 * 1rem;
+    line-height: 24/100 * 1rem;
+    &.ant-skeleton-avatar-circle {
+      border-radius: 50%;
+    }
+  }
+  .ant-skeleton-input {
+    display: inline-block;
+    vertical-align: top;
+    background: #f2f2f2;
+    width: 100%;
+    height: 32/100 * 1rem;
+    line-height: 32/100 * 1rem;
+  }
+  .ant-skeleton-input-lg {
+    width: 100%;
+    height: 40/100 * 1rem;
+    line-height: 40/100 * 1rem;
+  }
+  .ant-skeleton-input-sm {
+    width: 100%;
+    height: 24/100 * 1rem;
+    line-height: 24/100 * 1rem;
+  }
+  .ant-skeleton-image {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    vertical-align: top;
+    background: #f2f2f2;
+    width: 96/100 * 1rem;
+    height: 96/100 * 1rem;
+    line-height: 96/100 * 1rem;
+    &.ant-skeleton-image-circle {
+      border-radius: 50%;
+    }
+  }
+  .ant-skeleton-image-path {
+    fill: #bfbfbf;
+  }
+  .ant-skeleton-image-svg {
+    width: 48/100 * 1rem;
+    height: 48/100 * 1rem;
+    line-height: 48/100 * 1rem;
+    max-width: 192/100 * 1rem;
+    max-height: 192/100 * 1rem;
+    &.ant-skeleton-image-circle {
+      border-radius: 50%;
+    }
+  }
+}
+
+@keyframes ant-skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+.ant-skeleton-rtl {
+  // direction: rtl;
+  .ant-skeleton-header {
+    padding-right: 0;
+    padding-left: 16/100 * 1rem;
+  }
+  &.ant-skeleton {
+    &.ant-skeleton-active {
+      .ant-skeleton-avatar {
+        animation-name: ant-skeleton-loading-rtl;
+      }
+    }
+  }
+}
+
+@keyframes ant-skeleton-loading-rtl {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+.ant-skeleton-rtl {
+  direction: rtl;
+}

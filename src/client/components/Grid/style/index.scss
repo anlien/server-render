@@ -1,0 +1,109 @@
+@import '../../../styles/themes/default.scss';
+@import '../../../styles/mixins/hairline.scss';
+
+$flexPrefixCls: am-flexbox;
+$gridPrefixCls: am-grid;
+
+/* flexbox */
+.#{$gridPrefixCls} {
+  .#{$flexPrefixCls} {
+    background: $fill-base;
+
+    .#{$flexPrefixCls}-item {
+      margin-left: 0;
+
+      &.#{$gridPrefixCls}-item {
+        position: relative;
+      }
+
+      &.#{$gridPrefixCls}-item-active {
+        .#{$gridPrefixCls}-item-content {
+          background-color: $fill-tap;
+        }
+      }
+
+      .#{$gridPrefixCls}-item-content {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        padding: $v-spacing-lg 0;
+
+        .#{$gridPrefixCls}-item-inner-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          .#{$gridPrefixCls}-icon {
+            max-width: 100%;
+          }
+
+          .#{$gridPrefixCls}-text {
+            margin-top: $v-spacing-lg;
+            font-size: $font-size-caption-sm;
+            color: $color-text-base;
+            text-align: center;
+          }
+
+          &.column-num-3 {
+            .#{$gridPrefixCls}-text {
+              font-size: $font-size-caption;
+            }
+          }
+
+          &.column-num-2 {
+            .#{$gridPrefixCls}-text {
+              margin-top: $v-spacing-lg;
+              font-size: 18 * $hd;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.#{$gridPrefixCls}-line {
+    position: relative;
+    &:not(.#{ $gridPrefixCls }-carousel) {
+      @include hairline-top();
+      @include hairline-right();
+    }
+
+    .#{$flexPrefixCls} {
+      position: relative;
+      @include hairline-bottom();
+
+      .#{$flexPrefixCls}-item {
+        position: relative;
+        &:first-child {
+          @include hairline-left();
+        }
+        &:not(:last-child) {
+          @include hairline-right();
+        }
+      }
+    }
+  }
+
+  &.#{$gridPrefixCls}-square {
+    .#{$gridPrefixCls}-item {
+      &:before {
+        display: block;
+        content: ' ';
+        padding-bottom: 100%;
+      }
+      .#{$gridPrefixCls}-item-content {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .#{$gridPrefixCls}-item-inner-content {
+        height: 100%;
+        .#{$gridPrefixCls}-icon {
+          margin-top: $v-spacing-lg;
+          width: 28% !important;
+        }
+      }
+    }
+  }
+}

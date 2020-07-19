@@ -1,0 +1,85 @@
+.ant-result {
+  padding: 48px 32px;
+  // status color
+  &-success &-icon > .anticon {
+    color: #52c41a;
+  }
+
+  &-error &-icon > .anticon {
+    color: #ff4d4f;
+  }
+
+  &-info &-icon > .anticon {
+    color: #1890ff;
+  }
+
+  &-warning &-icon > .anticon {
+    color: #faad14;
+  }
+
+  // Exception Status image
+  &-image {
+    width: 250px;
+    height: 295px;
+    margin: auto;
+  }
+
+  &-icon {
+    margin-bottom: 24px;
+    text-align: center;
+
+    > .anticon {
+      font-size: 72px;
+    }
+  }
+
+  &-title {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 24px;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  &-subtitle {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  &-extra {
+    margin: 24px 0 0;
+    text-align: center;
+    > * {
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &-content {
+    margin-top: 24px;
+    padding: 24px 40px;
+    background-color: #fafafa;
+  }
+  &-rtl {
+    direction: rtl;
+  }
+
+  &-extra {
+    > * {
+      .ant-result-rtl & {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+
+      &:last-child {
+        .ant-result-rtl & {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}

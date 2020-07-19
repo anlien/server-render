@@ -7,7 +7,7 @@ const serverConfigDir = {
   srcDir: 'src',
   rootDir: 'dist',
   buildDir: 'dist/server',
-  watchNodeDir: '../src/server',
+  watchNodeDir: '../src',
 };
 
 const clientConfig = {
