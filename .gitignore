@@ -1,5 +1,4 @@
 node_modules
-.vscode
 .vs
 .DS_Store
 .idea
@@ -9,3 +8,4 @@ dist
 build
 build/*
 package-lock.json
+.eslintcache

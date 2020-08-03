@@ -6,12 +6,7 @@ import ThemedButton from './themed-button';
 
 // An intermediate component that uses the ThemedButton
 function Toolbar(props) {
-  
-  return (
-    <ThemedButton onClick={props.changeTheme}>
-      Change Theme
-    </ThemedButton>
-  );
+  return <ThemedButton onClick={props.changeTheme}>Change Theme</ThemedButton>;
 }
 
 export default class App extends React.Component {
@@ -22,14 +17,14 @@ export default class App extends React.Component {
     };
 
     this.toggleTheme = () => {
-      this.setState(state => ({
-        theme:
-          state.theme === themes.dark
-            ? themes.light
-            : themes.dark,
-      }), () => {
-        throw (new Error('错误包'));
-      });
+      this.setState(
+        state => ({
+          theme: state.theme === themes.dark ? themes.light : themes.dark,
+        }),
+        () => {
+          throw new Error('错误包');
+        },
+      );
     };
   }
   componentDidCatch(error, errorInfo) {

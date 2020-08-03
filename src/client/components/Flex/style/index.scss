@@ -1,0 +1,121 @@
+// $import '../../../../style/default';
+@import '../../../styles/themes/default.scss';
+
+$flexPrefixCls: am-flexbox;
+
+/* flexbox */
+.#{$flexPrefixCls} {
+  text-align: left;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  &.#{$flexPrefixCls}-dir-row {
+    flex-direction: row;
+  }
+
+  &.#{$flexPrefixCls}-dir-row-reverse {
+    flex-direction: row-reverse;
+  }
+
+  &.#{$flexPrefixCls}-dir-column {
+    flex-direction: column;
+    .#{$flexPrefixCls}-item {
+      margin-left: 0;
+    }
+  }
+
+  &.#{$flexPrefixCls}-dir-column-reverse {
+    flex-direction: column-reverse;
+    .#{$flexPrefixCls}-item {
+      margin-left: 0;
+    }
+  }
+
+  &.#{$flexPrefixCls}-nowrap {
+    flex-wrap: nowrap;
+  }
+
+  &.#{$flexPrefixCls}-wrap {
+    flex-wrap: wrap;
+  }
+
+  &.#{$flexPrefixCls}-wrap-reverse {
+    flex-wrap: wrap-reverse;
+  }
+
+  &.#{$flexPrefixCls}-justify-start {
+    justify-content: flex-start;
+  }
+
+  &.#{$flexPrefixCls}-justify-end {
+    justify-content: flex-end;
+  }
+
+  &.#{$flexPrefixCls}-justify-center {
+    justify-content: center;
+  }
+
+  &.#{$flexPrefixCls}-justify-between {
+    justify-content: space-between;
+  }
+
+  &.#{$flexPrefixCls}-justify-around {
+    justify-content: space-around;
+  }
+
+  &.#{$flexPrefixCls}-align-start {
+    align-items: flex-start;
+  }
+
+  &.#{$flexPrefixCls}-align-end {
+    align-items: flex-end;
+  }
+
+  &.#{$flexPrefixCls}-align-center {
+    align-items: center;
+  }
+
+  &.#{$flexPrefixCls}-align-stretch {
+    align-items: stretch;
+  }
+
+  &.#{$flexPrefixCls}-align-baseline {
+    align-items: baseline;
+  }
+
+  &.#{$flexPrefixCls}-align-content-start {
+    align-content: flex-start;
+  }
+
+  &.#{$flexPrefixCls}-align-content-end {
+    align-content: flex-end;
+  }
+
+  &.#{$flexPrefixCls}-align-content-center {
+    align-content: center;
+  }
+
+  &.#{$flexPrefixCls}-align-content-between {
+    align-content: space-between;
+  }
+
+  &.#{$flexPrefixCls}-align-content-around {
+    align-content: space-around;
+  }
+
+  &.#{$flexPrefixCls}-align-content-stretch {
+    align-content: stretch;
+  }
+
+  & &-item {
+    box-sizing: border-box;
+    flex: 1;
+    margin-left: $h-spacing-md;
+    min-width: 10 * $hd;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

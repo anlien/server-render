@@ -1,0 +1,16 @@
+.body,
+.html {
+  font-family: PingFang SC, Helvetica Neue, Hiragino Sans GB, Helvetica, Microsoft YaHei, Arial;
+}
+.app-container {
+  position: absolute;
+  z-index: 8;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}
+.app-nav-wrap {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
